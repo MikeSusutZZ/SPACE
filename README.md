@@ -18,7 +18,7 @@ These resources can be harvested by activating a settlement or city you have bui
 ** - Krystals (K):** Used to build more advanced things, power warp gates, and make ships travel 2 spaces in a turn
 ** - Discovery (D):** spent to develop the tech tree
 
-### Pieces
+### Actions
 Ships can hold resources in their cargo. This cargo size is different for each ship. Ships have certain actions. All ships have: 
 - Load/Unload: add resources from where they are landed to thier cargo add resources from their cargo to where they are landed
 - Move: Spend one fuel from it's cargo to move one space cardinally
@@ -27,18 +27,25 @@ Ships can hold resources in their cargo. This cargo size is different for each s
 Fighters, Dreadnaughts and Turrets may:
 - Attack: Destroy this to destroy a chosen opposing ship, turret, or shield. If a ships has a shield, it must be destroyed first, then turrets, then the ship itself.
 
-Carriers and Dreadnaughts have a docking bay with different sizes where smaller ships may land, and mounting points where shields and turrets can be added. They may:
-- Dock: Land ships, shields, warp rings or turrets on the same space on this ship (cannot land other carriers or dreadnaughts, docked shields and turrets cannot be used, only transported)
+Carriers, Dreadnaughts, and Merchant ships have a docking bay with different sizes where smaller ships may land. They may:
+- Dock: Land ships, shields, warp rings or turrets on the same space on this ship (cannot land other ships with docking, docked shields and turrets cannot be used, only transported)
 - Deploy: Return the landed ships, shields, and turrets to the board.
 
-Carriers, Dreadnaughts, and Advanced fighters have a certain amount of mounting points and may:
-- Mount: Add one shield, turret, or warp ring from the same space as this ship to a mounting point (Once something is mounted it may not be removed)
+Carriers, Dreadnaughts, and Advanced ships have a certain amount of mounting points and may:
+- Mount: Add shields, turrets, or warp rings from the same space as this ship to a mounting point (Once something is mounted it may not be removed)
 
 Warp Gates may:
-- Mass Warp: Move any number of ships to the location of any other warp gate
+- Mass Warp: Move any number of ships on this location to the location of any other warp gate
+- Warp Gates are not considered ships and cannot take any other actions, and cannot be docked
 
 Warp Rings may:
 - Individual Warp: Move the ship this is mounted to to the location of any warp gate
 
-######
+### Pieces and Costs
+##### Standard
+- Cargo Ship: MM, cargo 6
+- Fighter: KKMM, cargo 3, attack
+- Turret: KM, mountable
+- Shield: MM, mountable
+- Carrier: 
  
