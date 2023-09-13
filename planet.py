@@ -80,6 +80,7 @@ planet_names = [
     "Falo",
     "Zenith",
     "Eden",
+    "Awk"
 
 ]
 
