@@ -4,7 +4,7 @@ import random
 class Planet(Location):
     
     def __init__(self):
-        super().__init__(None)
+        super().__init__()
         self.resources = {"C": self.genResources('C'), "F": self.genResources('F'),
                             "M": self.genResources('M'), "K": self.genResources('K'),
                             "D": self.genResources('D')}
@@ -20,6 +20,10 @@ class Planet(Location):
         print("\n")
         for res in self.cargo:
             print(f"{res}, ")
+        self.printShips()
+
+    def unloadShip(self, shipIndex, cargoIndex):
+        self.cargo.append(self.ships[shipIndex - 1].unload(cargoIndex))
 
     def genResources(self, type):
         roll = random.randint(1,10)
@@ -71,7 +75,12 @@ planet_names = [
     "Xenara",
     "Moltrus",
     "Zenquor",
-    "Oblivis"
+    "Oblivis",
+    "Esper",
+    "Falo",
+    "Zenith",
+    "Eden",
+
 ]
 
 # List of Roman numerals and Greek letters for added variety

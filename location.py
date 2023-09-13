@@ -1,8 +1,7 @@
 import random
 
 class Location:
-    def __init__(self, has):
-        self.has = has
+    def __init__(self):
         self.ships = []
 
 
@@ -12,17 +11,10 @@ class Location:
     def shipLeaves(self, index):
         ship = self.ships[index]
         if ship.moved():
-            self.ships.remove(index)
+            self.ships.pop(index)
         else: return False
 
-    def info(self):
-        if(self.has == 'empty'):
-            print("No planets in the sector")
-        elif self.has == 'asteroid':
-            print('This sector is full of dangerously sized asteroids')
-            print('There is nothing worth dying for out here')
-        else:
-            self.has.info()
+    def printShips(self):
         print("Ships at this location")
         for i in range(0, len(self.ships)):
                 print(f"{i + 1}) ", end='')

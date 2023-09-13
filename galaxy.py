@@ -8,7 +8,7 @@ class Galaxy:
     def determineLoc():
         option = random.randint(1, 5)
         if option == 1 or option == 2:
-            return Location(Planet())
+            return Planet()
         elif option == 3 or option == 4:
             return Location('empty')
         elif option == 5:
