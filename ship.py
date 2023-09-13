@@ -9,9 +9,14 @@ class Ship:
     def deactivate(self):
         self.used = True
 
-    # def moved():
-    #     for resource in self.cargo:
-    #         if resource == 'F'
+    def moved(self):
+        for resource in self.cargo:
+            if resource == 'F':
+                self.deactivate()
+                return True
+        print("No fuel")
+        return False
+
 
 
     def printCargo(self):
