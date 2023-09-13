@@ -17,7 +17,8 @@ class Ship:
         print("No fuel")
         return False
 
-
+    def info(self):
+        self.printCargo()
 
     def printCargo(self):
         for count, resource in enumerate(self.cargo):

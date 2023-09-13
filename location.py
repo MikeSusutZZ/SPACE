@@ -25,7 +25,7 @@ class Location:
             self.has.info()
         print("Ships at this location")
         for i in range(0, len(self.ships)):
-                print(f"{i}) ", end='')
+                print(f"{i + 1}) ", end='')
                 self.ships[i].info()
                 if i > 4:
                     print("")

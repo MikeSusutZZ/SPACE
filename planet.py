@@ -4,11 +4,13 @@ import random
 class Planet(Location):
     
     def __init__(self):
+        super().__init__(None)
         self.resources = {"C": self.genResources('C'), "F": self.genResources('F'),
                             "M": self.genResources('M'), "K": self.genResources('K'),
                             "D": self.genResources('D')}
         self.name = genName()
         self.cargo = []
+
 
 
     def info(self):
@@ -19,7 +21,7 @@ class Planet(Location):
         for res in self.cargo:
             print(f"{res}, ")
 
-    def genResources(type):
+    def genResources(self, type):
         roll = random.randint(1,10)
         if type == 'C' or type == 'F':
             if roll <= 3:
@@ -73,7 +75,7 @@ planet_names = [
 ]
 
 # List of Roman numerals and Greek letters for added variety
-roman_numerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+roman_numerals = ["", '', '', "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 greek_letters = ["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa"]
 
 def genName():
@@ -86,5 +88,5 @@ def genName():
     """
     planet = random.choice(planet_names)
     suffix = random.choice([random.choice(roman_numerals), random.choice(greek_letters)])
-    return f"{planet} {suffix}"
+    return f"{planet}-{suffix}"
 
