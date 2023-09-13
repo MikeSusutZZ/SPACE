@@ -1,6 +1,9 @@
-
+from ship import Ship
+from location import Location
+from planet import Planet
+from galaxy import Galaxy
 def main():
-    from ship import Ship
+    
     newShip = Ship()
     newShip.cargo.append("F")
     newShip.cargo.append("F")

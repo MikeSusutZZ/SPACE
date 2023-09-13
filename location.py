@@ -1,5 +1,4 @@
 import random
-from planet import Planet
 
 class Location:
     def __init__(self, has):
@@ -22,7 +21,7 @@ class Location:
         elif self.has == 'asteroid':
             print('This sector is full of dangerously sized asteroids')
             print('There is nothing worth dying for out here')
-        elif isinstance(self.has, Planet):
+        else:
             self.has.info()
         print("Ships at this location")
         for i in range(0, len(self.ships)):

@@ -15,5 +15,6 @@ class Galaxy:
             return Location('asteriod')
         else:
             return 'Invalid option'
+        
 
     

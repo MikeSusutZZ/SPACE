@@ -4,10 +4,21 @@ import random
 class Planet(Location):
     
     def __init__(self):
+        self.resources = {"C": self.genResources('C'), "F": self.genResources('F'),
+                            "M": self.genResources('M'), "K": self.genResources('K'),
+                            "D": self.genResources('D')}
+        self.name = genName()
+        self.cargo = []
 
-        self.resources = {"C": self.genResources('C'), "F": self.genResources('F'), "M": self.genResources('M'), "K": self.genResources('K'), "D": self.genResources('D')}
-        
-    
+
+    def info(self):
+        print(f"Planet {self.name}")
+        for key, value in self.resources.items():
+            print(f"{key} {value}, ", end='')
+        print("\n")
+        for res in self.cargo:
+            print(f"{res}, ")
+
     def genResources(type):
         roll = random.randint(1,10)
         if type == 'C' or type == 'F':
@@ -18,8 +29,8 @@ class Planet(Location):
             elif roll == 7:
                 return 3
             else: return 0
-
-        if type == 'M':
+ 
+        elif type == 'M':
             if roll <= 3:
                 return 1
             elif roll == 4:
@@ -28,7 +39,7 @@ class Planet(Location):
                 return 3
             else: return 0
 
-        if type == 'K' or type == 'D':
+        elif type == 'K' or type == 'D':
             if roll <= 2:
                 return 1
             elif roll == 3:
@@ -36,3 +47,44 @@ class Planet(Location):
             elif roll == 4:
                 return 3
             else: return 0
+
+    # List of original, cool fictional planet names
+planet_names = [
+    "Quoroxia",
+    "Vintor",
+    "Pluvaria",
+    "Gryphus",
+    "Stranora",
+    "Zelphion",
+    "Vorlithe",
+    "Crendora",
+    "Bluvora",
+    "Tolmara",
+    "Elveron",
+    "Skarnox",
+    "Velthra",
+    "Quintora",
+    "Lynthis",
+    "Ortheon",
+    "Xenara",
+    "Moltrus",
+    "Zenquor",
+    "Oblivis"
+]
+
+# List of Roman numerals and Greek letters for added variety
+roman_numerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+greek_letters = ["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa"]
+
+def genName():
+    """
+    Returns a randomly selected planet name from the list of original fictional planet names,
+    appended with either a Roman numeral or a Greek letter for added variety.
+
+    Returns:
+    - str: The name of a random original fictional planet with added variety.
+    """
+    planet = random.choice(planet_names)
+    suffix = random.choice([random.choice(roman_numerals), random.choice(greek_letters)])
+    return f"{planet} {suffix}"
+
