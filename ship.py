@@ -28,7 +28,7 @@ class Ship:
     def printRapid(self):
         for resource in self.cargo:
             print(resource, end="")
-            print("")
+        print("")
 
     def unload(self, index):
         return self.cargo.pop(index - 1)

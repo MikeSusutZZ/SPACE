@@ -25,6 +25,10 @@ class Planet(Location):
     def unloadShip(self, shipIndex, cargoIndex):
         self.cargo.append(self.ships[shipIndex - 1].unload(cargoIndex))
 
+    def loadShip(self, shipIndex, cargoIndex):
+    toBeLoaded = 
+        self.ships[shipIndex].cargo.append(self.cargo)
+
     def genResources(self, type):
         roll = random.randint(1,10)
         if type == 'C' or type == 'F':

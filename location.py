@@ -22,4 +22,6 @@ class Location:
                 if i > 4:
                     print("")
 
-# sorted(self.ships, key=lambda x: x.used)
+    def menu(self):
+         print()
+# sorted(self.ships, key=lambda x: x.used) 
