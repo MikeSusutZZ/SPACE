@@ -22,12 +22,20 @@ class Planet(Location):
             print(f"{res}, ")
         self.printShips()
 
-    def unloadShip(self, shipIndex, cargoIndex):
-        self.cargo.append(self.ships[shipIndex - 1].unload(cargoIndex))
+    def unloadShip(self, shipIndex, cargoIndexArray):
+        tarShip = self.ships[shipIndex]
+        for cargoIndex in cargoIndexArray:
+            self.cargo.append(tarShip.unload(cargoIndex))
 
-    def loadShip(self, shipIndex, cargoIndex):
-    toBeLoaded = 
-        self.ships[shipIndex].cargo.append(self.cargo)
+    def loadShip(self, shipIndex, cargoIndexArray):
+        tarShip = self.ships[shipIndex]
+        for cargoIndex in cargoIndexArray:
+            tarShip.load(self.cargo.pop(cargoIndex))
+            
+
+    def moveCargo(self, shipIndex):
+        
+
 
     def genResources(self, type):
         roll = random.randint(1,10)
