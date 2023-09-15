@@ -7,13 +7,16 @@ def main():
     newShip = Ship()
     newShip.cargo.append("F")
     newShip.cargo.append("F")
+    newShip.cargo.append('C')
+    newShip.cargo.append("K")
     
     galaxy = Galaxy(3)
     galaxy.locations[0][0] = Planet()
     loc = galaxy.locations[0][0]
+    loc.gather()
     loc.shipArrives(newShip)
     loc.info()
-    loc.unloadShip(1,1)
+    loc.moveCargo(1, [], [])
     loc.info()
 
 if __name__ == "__main__":

@@ -15,85 +15,111 @@ class Planet(Location):
 
     def info(self):
         print(f"Planet {self.name}")
+        self.cargo.sort()
         for key, value in self.resources.items():
             print(f"{key} {value}, ", end='')
         print("\n")
         for res in self.cargo:
-            print(f"{res}, ")
+            print(f"{res}, ", end='')
+        print("")
         self.printShips()
+        print(f"\n")
 
-    def unloadShip(self, shipIndex, cargoIndexArray):
-        tarShip = self.ships[shipIndex]
-        for cargoIndex in cargoIndexArray:
-            self.cargo.append(tarShip.unload(cargoIndex))
+    # def unloadShip(self, shipIndex, cargoIndexArray):
+    #     tarShip = self.ships[shipIndex]
+    #     for cargoIndex in cargoIndexArray:
+    #         self.cargo.append(tarShip.unload(cargoIndex))
 
-    def loadShip(self, shipIndex, cargoIndexArray):
-        tarShip = self.ships[shipIndex]
-        for cargoIndex in cargoIndexArray:
-            tarShip.load(self.cargo.pop(cargoIndex))
+    # def loadShip(self, shipIndex, cargoIndexArray):
+    #     tarShip = self.ships[shipIndex]
+    #     for cargoIndex in cargoIndexArray:
+    #         tarShip.load(self.cargo.pop(cargoIndex))
             
 
     def moveCargo(self, shipIndex, goingToPlanet, goingToShip):
-        self.cargo.sort()
-        tarShip = self.ships[shipIndex]
-        tarShip.cargo.sort()
-        originalValueShip = tarShip.cargo
-        originalValuePlanet = self.cargo
-        print(f"A) {self.name}: ")
-        self.loadingDetails(self.cargo)
-        print(f"B)To be tranfered to {self.name}: ")
-        self.loadingDetails(goingToPlanet)
-        print(f"C)To be transfered to the ship: ")
-        self.loadingDetails(goingToShip)
-        print(f"D)The ship: ")
-        self.loadingDetails(tarShip.cargo)
-        inp = input(f"What resource would you like to move \n(c to finalize, x to cancle, h for help)").lower()
-        if inp == 'c':
-            self.cargo.extend(goingToPlanet)
-            tarShip.cargo.extend(goingToShip)
-            tarShip.deactivate()
-        elif inp == 'x':
-            self.cargo = originalValuePlanet
-            tarShip.cargo = originalValueShip
-        elif inp == 'h':
-            self.loadingHelp()
-            self.moveCargo(shipIndex, goingToPlanet, goingToShip)
-        else:
-            try:
-                takingFrom, resource = inp.split(" ", 1)
-                if takingFrom == 'a':
-                    goingToShip.append(self.cargo.pop(resource))
-                elif takingFrom == 'b':
-                    tarShip.cargo.append(goingToPlanet.pop(resource))
-                elif takingFrom == 'c':
-                    self.cargo.append(goingToShip.pop(resource))
-                elif takingFrom == 'd':
-                    goingToPlanet.cargo.append(tarShip.cargo.pop(resource))
-                else:
-                    print(f"There was an issue with your input (Likely not the correct letter)")
+        while True:
+            self.cargo.sort()
+            tarShip = self.ships[shipIndex - 1]
+            tarShip.cargo.sort()
+
+            print(f"A) {self.name}: " , end='')
+            self.loadingDetails(self.cargo)
+            print(f"B) To be tranfered to {self.name}: ", end='')
+            self.loadingDetails(goingToPlanet)
+            print(f"C) To be transfered to the ship: ", end='')
+            self.loadingDetails(goingToShip)
+            print(f"D) The {tarShip.shipType} ship: ", end='')
+            self.loadingDetails(tarShip.cargo)
+
+            inp = input(f"\nWhat resource would you like to move \n(c to finalize, x to cancel, h for help)").lower()
+            # complete the move
+            if inp == 'c':
+                # checking overpacking the ship
+                if len(tarShip.cargo) + len(goingToShip) > tarShip.cargoSize:
+                    print(f"A {tarShip.shipType} doesn't have enough cargo space to hold all of that")
+                    print(f"Please reduce the amount of resources going to the ship to a total of {tarShip.cargoSize}")
                     self.moveCargo(shipIndex, goingToPlanet, goingToShip)
-            except:
-                print(f"There was an issue with your input")
+                else:
+                    self.cargo.extend(goingToPlanet)
+                    tarShip.cargo.extend(goingToShip)
+                    tarShip.deactivate()
+                    break
+            # Cancel the move, return ships to their old values
+            elif inp == 'x':
+                self.cargo.extend(goingToShip)
+                tarShip.cargo.extend(goingToPlanet)
+                break
+
+            # Help
+            elif inp == 'h':
+                self.loadingHelp()
                 self.moveCargo(shipIndex, goingToPlanet, goingToShip)
+
+            # Transfer Resources
+            else:
+                try:
+                    takingFrom, resource = inp.split(" ", 1)
+                    resource = int(resource)
+                    if takingFrom == 'a':
+                        goingToShip.append(self.cargo.pop(resource))
+                    elif takingFrom == 'b':
+                        tarShip.cargo.append(goingToPlanet.pop(resource))
+                    elif takingFrom == 'c':
+                        self.cargo.append(goingToShip.pop(resource))
+                    elif takingFrom == 'd':
+                        goingToPlanet.cargo.append(tarShip.cargo.pop(resource))
+                    else:
+                        print(f"There was an issue with your input (Likely not the correct letter)")
+                        input("hit enter to continue")
+                except:
+                    print(f"There was an issue with your input")
+                    input("hit enter to continue")
+                    
 
     def loadingHelp():
         print(f'''To input what you want to move, enter 2 values at once separated by a space:
 First the location you are taking a resource from, denoted by the letter
 next to where the cargo is printed (ex. Planet = A)
 Then the index of the resource you want to move (If you want the first resource from
-the planet, you have A 1 ). The resources that are being moved are held in the 'to be transfered' location
+the planet, you have A 1, make sure you give the space!). The resources that are being moved are held in the 'to be transfered' location
 before the move is finalized
               
 hit enter to continue...''')
         input('')
 
-    def loadingDetails(cargo):
+    def loadingDetails(self, cargo):
         for i, res in enumerate(cargo):
-            print(f"{i + 1}. {res}", end='')
-            if i % 10:
+            print(f"{i + 1}{res} ", end='')
+            if i % 10 == 9:
                 print('')
+        print('')
         
-
+    def gather(self):
+        result = []
+        for key, value in self.resources.items():
+            result.extend([key] * value)
+        self.cargo.extend(result)
+    
 
     def genResources(self, type):
         roll = random.randint(1,10)

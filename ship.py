@@ -1,6 +1,8 @@
 class Ship:
     def __init__(self):
         self.cargo = []
+        self.cargoSize = 6
+        self.shipType = "Cargo"
         self.used = False
 
     def reactivate(self):
@@ -18,17 +20,17 @@ class Ship:
         return False
 
     def info(self):
-        self.printRapid()
+        self.cargo.sort()
+        print(f"{self.shipType} ", end='')
+        for resource in self.cargo:
+            print(resource, end="")
+        print("")
+
 
     def printCargo(self):
         for count, resource in enumerate(self.cargo):
             print(f"{count + 1} {resource}, ", end='')
         print(" ")
-
-    def printRapid(self):
-        for resource in self.cargo:
-            print(resource, end="")
-        print("")
 
     def unload(self, index):
         return self.cargo.pop(index - 1)
