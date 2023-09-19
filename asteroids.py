@@ -10,6 +10,7 @@ class Asteroid(Location):
         self.printShips()
 
     def reactivate(self):
+        super().reactivate
         for ship in self.ships:
             if random.randint(1,2) == 1:
                 self.ships.remove(ship)

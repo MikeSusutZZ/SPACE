@@ -4,6 +4,9 @@ class Location:
     def __init__(self):
         self.ships = []
 
+    def reactivate(self):
+         for ship in self.ships:
+              ship.reactivate()
 
     def shipArrives(self, ship):
         self.ships.append(ship)

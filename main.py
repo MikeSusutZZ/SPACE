@@ -12,12 +12,14 @@ def main():
     
     galaxy = Galaxy(3)
     galaxy.locations[0][0] = Planet()
+    galaxy.info()
     loc = galaxy.locations[0][0]
     loc.gather()
     loc.shipArrives(newShip)
     loc.info()
     loc.moveCargo(1, [], [])
     loc.info()
+
 
 if __name__ == "__main__":
     main()

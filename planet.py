@@ -10,8 +10,11 @@ class Planet(Location):
                             "D": self.genResources('D')}
         self.name = genName()
         self.cargo = []
+        self.used = False
 
-
+    def reactivate(self):
+        super().reactivate()
+        self.used = False
 
     def info(self):
         print(f"Planet {self.name}")
