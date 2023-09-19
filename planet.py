@@ -184,7 +184,7 @@ planet_names = [
 ]
 
 # List of Roman numerals and Greek letters for added variety
-roman_numerals = ["", '', '', "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+roman_numerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 greek_letters = ["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa"]
 
 def genName():
