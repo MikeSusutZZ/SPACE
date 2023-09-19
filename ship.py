@@ -14,7 +14,7 @@ class Ship:
     def moved(self):
         for resource in self.cargo:
             if resource == 'F':
-                self.deactivate()
+                #self.deactivate()
                 self.cargo.remove(resource)
                 return True
         print("No fuel")

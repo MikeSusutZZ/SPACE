@@ -13,7 +13,9 @@ def menu(galaxy):
         galaxy.info()
         col, row = (input("Enter the coordinates of where you would like to view (ex: A 1)\n or enter 'e' to end the round: ")).split(' ', 1)
         print("")
-        galaxy.locations[ord(col.lower()) - 97][int(row) - 1].menu()
+        try:
+            galaxy.locations[int(row) - 1][ord(col.lower()) - 97].menu(galaxy, ord(col.lower()) - 97, int(row))
+        except: print('Invalid input')
 
 
 def checkWin(galaxy):
