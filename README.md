@@ -1,6 +1,8 @@
 # S.P.A.C.E.
 ## Supply, Prosper, And Conquer Everything
 
+## This is currently not working yet and is in progress
+
 *After untold years, our seed ship has finally located us a home and ended our cryostasis. This new galaxy is full of possibility, resources and dangers, and all of it is yours to conquer*
 
 This is a text based board game that places you at the head of a fledgling colony in a galaxy full of planets with resources that will help you expand further into the galaxy. The goal is to have settlements or cities on every planet in the galaxy in as few turns as possible. This game was inspired by the thought of "What if Catan made you move resources from their sources to the location you are building, rather than putting them in your hand?", followed by failed prototypes that resulted in too much info in too small of physical space. Additionally, it came from trying to play 4X space games and getting fed up with the insanely high learning curve and the sheer amount of information being thrown at you.
