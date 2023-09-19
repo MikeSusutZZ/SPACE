@@ -10,7 +10,7 @@ class Planet(Location):
                             "D": self.genResources('D')}
         self.name = genName()
         self.cargo = []
-        self.used = False
+        self.used = True
 
     def reactivate(self):
         super().reactivate()

@@ -25,6 +25,10 @@ class Location:
                 if i > 4:
                     print("")
 
+    def info(self):
+         print("Nothing but here but empty space and whtever you brought with you")
+         self.printShips()
+
     def menu(self):
-         print()
+         self.info()
 # sorted(self.ships, key=lambda x: x.used) 

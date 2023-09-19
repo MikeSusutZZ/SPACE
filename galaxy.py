@@ -5,25 +5,35 @@ from asteroids import Asteroid
 class Galaxy:
     def __init__(self, size):
         self.locations = [[self.determineLoc() for x in range(size)] for y in range(size)]
+        homeWorld = Planet()
+        homeWorld.resources = {'C': 3, 'F': 2, 'M': 2, 'K': 0, 'D': 0}
+        homeWorld.name = 'Home'
+        homeWorld.used = False
+        self.locations[size // 2][size // 2] = homeWorld
 
     def determineLoc(self):
-        option = random.randint(1, 5)
-        if option == 1 or option == 2:
+        option = random.randint(1, 15)
+        if option < 5:
             return Planet()
-        elif option == 3 or option == 4:
+        elif option >= 5 and option < 12:
             return Location()
-        elif option == 5:
+        elif option >= 12:
             return Asteroid()
         else:
             return 'Invalid option'
         
     def info(self):
-        for row in self.locations:
+        print("      ", end='')
+        for i, thing in enumerate(self.locations):
+            print(f"( {chr(i + 65)} ) ", end='')
+        print(f"\n")
+        for i, row in enumerate(self.locations):
+            print(f"( {i + 1} ) ", end='')
             for loc in row:
                 act = '_'
                 locType = '_'
                 for ship in loc.ships:
-                    if isinstance(loc, Planet) and not ship.used:
+                    if not ship.used:
                         act = '^'
                 if isinstance(loc, Planet):
                     locType = 'P'
@@ -31,8 +41,8 @@ class Galaxy:
                     locType = 'A' 
                 if isinstance(loc, Planet) and not loc.used:
                     act = '*'
-                print(f"[{locType},{act}]", end='')
-            print("")
+                print(f"[{locType},{act}] ", end='')
+            print("\n")
 
         
 
