@@ -4,10 +4,9 @@ from planet import Planet
 from asteroids import Asteroid
 class Galaxy:
     def __init__(self, size):
-        self.locations = [[0 for x in range(size)] for y in range(size)]
-        self.size = size
+        self.locations = [[self.determineLoc() for x in range(size)] for y in range(size)]
 
-    def determineLoc():
+    def determineLoc(self):
         option = random.randint(1, 5)
         if option == 1 or option == 2:
             return Planet()
