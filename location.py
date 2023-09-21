@@ -29,7 +29,8 @@ class Location:
                 if i > 4:
                     print("")
 
-    def info(self):
+    def info(self, col, row):
+         print(f"{chr(col + 65)} {row}) ")
          print("Nothing but here but empty space and whatever you brought with you")
          self.printShips()
          print('')
@@ -44,28 +45,33 @@ class Location:
 
     def shipMovementMenu(self, galaxy, col, row):
         while True:
-            self.info()
-            action = input("pick a ship you would like to move, or enter 'b' to go back: ").lower()
-            if action == 'b': break
+            self.info(col, row)
+            action = input("pick a ship you would like to move, or enter 'x' to go back: ").lower()
+            if action == 'x': break
             else:
-                tarShip = self.shipLeaves(int(action) - 1)
-                while True:
-                    dir = input("Would you like to go? (u)p, (d)own (l)eft, (r)ight: ").lower()
-                    if dir == 'u':
-                        self.moveShip(tarShip, galaxy, col, row - 2)
-                        break
-                    elif dir == 'd':
-                        self.moveShip(tarShip, galaxy, col + 1, row - 2)
-                        break
-                    elif dir == 'l':
-                        self.moveShip(tarShip, galaxy, col - 1, row - 3)
-                        break
-                    elif dir == 'r':
-                        self.moveShip(tarShip, galaxy, col - 1, row)
-                        break
-                    else:
-                        print("Invalid input")
-
+                try:
+                    tarShip = self.shipLeaves(int(action) - 1)
+                    while True:
+                        dir = input("Would you like to go? (u)p, (d)own (l)eft, (r)ight, view (g)alaxy, or 'x' to cancel: ").lower()
+                        if dir == 'u':
+                            self.moveShip(tarShip, galaxy, col, row - 2)
+                            break
+                        elif dir == 'd':
+                            self.moveShip(tarShip, galaxy, col + 1, row - 2)
+                            break
+                        elif dir == 'l':
+                            self.moveShip(tarShip, galaxy, col - 1, row - 3)
+                            break
+                        elif dir == 'r':
+                            self.moveShip(tarShip, galaxy, col - 1, row)
+                            break
+                        elif dir == 'g':
+                            galaxy.info()
+                        elif dir == 'x':
+                            break
+                        else:
+                            print("Invalid input")
+                except: print(f"No ship at index {action}")
     
 
     def menu(self, galaxy, col, row):

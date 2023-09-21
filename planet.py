@@ -10,33 +10,71 @@ class Planet(Location):
                             "D": self.genResources('D')}
         self.name = genName()
         self.cargo = []
-        self.used = True
+        self.usage = 0
 
         self.settle = False
         self.city = False
         self.shipYard = False
 
-    def menu(self):
-        self.info()
+    def menu(self, galaxy, col, row):
+        self.info(col, row)
         while True:
+            inp = input(f"What would you like to do at this planet?\nA) Use ships\nB) Build a structure\nC) Harvest Resources\nI) Show info\nX) Leave planet: ").lower()
+            if inp == 'a':
+                print()
+                shipInp = input("Would you like to\nA) Move a ship\nB) Load/Unload a ship\n X) Close").lower()
+                while True:
+                    if shipInp == 'a':
+                        super().shipMovementMenu(galaxy, col, row)  
+                    elif shipInp == 'b' :
+                        self.loadingMenu()
+                    elif shipInp == 'x': break
+                    else: print("Not a valid input")
+            elif inp == 'b':
+                print()
+                self.buildMenu()
+            elif inp == 'c':
+                if not self.usage < 1: 
+                    self.harvest()
+                else: 
+                    print(f"This planet has already been used as much as it can be this turn")
+            elif inp == 'i':
+                self.info(col, row)
+            elif inp == 'x': 
+                break
+            else: print("Not a valid input")
+        
+
             
-            print(f"What would you like to do at this planet?\nA) Move ships\nB) Build a structure")
 
     def reactivate(self):
         super().reactivate()
-        self.used = False
+        if self.city: self.usage = 3
+        elif self.settle: self.usage = 1
 
-    def info(self):
+    def info(self, col, row):
+        print(f"{chr(col + 65)} {row}) ")
         print(f"Planet {self.name}")
         self.cargo.sort()
         for key, value in self.resources.items():
             print(f"{key} {value}, ", end='')
+        print()
         for res in self.cargo:
             print(f"{res} ", end='')
         print("")
         self.printShips()
         print(f"")
-            
+    
+
+    def loadingMenu(self, col, row):
+        while True:
+            self.info(col, row)
+            inp = input("pick a ship you would like to move, or enter 'x' to go back: ").lower()
+            if inp == 'x': break
+            else:
+                try:
+                    self.moveCargo(int(inp) - 1)
+                except: print(f"No ship at index {inp}")
 
     def moveCargo(self, shipIndex, goingToPlanet, goingToShip):
         while True:
@@ -116,11 +154,20 @@ hit enter to continue...''')
                 print('')
         print('')
         
-    def gather(self):
-        result = []
-        for key, value in self.resources.items():
-            result.extend([key] * value)
-        self.cargo.extend(result)
+    def harvest(self):
+        for resource in self.cargo:
+            if resource == 'C':
+                self.usage -= 1
+                self.cargo.remove(resource)
+
+                result = []
+                for key, value in self.resources.items():
+                    result.extend([key] * value)
+                self.cargo.extend(result)
+        # if it has not found a consumable and returned
+        print("No consumables to activate planet")
+        
+        
     
 
     def genResources(self, type):

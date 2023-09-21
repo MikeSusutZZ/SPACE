@@ -21,13 +21,13 @@ def menu(galaxy):
                 col, row = inp.split(' ', 1)
                 print("")
                 galaxy.locations[int(row) - 1][ord(col.lower()) - 97].menu(galaxy, ord(col.lower()) - 97, int(row))
-        except: print('Invalid input')
+        except Exception as e: print(f'Invalid input {e}')
 
 
 def checkWin(galaxy):
     winStatus = True
     for loc in galaxy.locations:
-        if isinstance(loc, Planet) and loc.used == True:
+        if isinstance(loc, Planet) and (loc.settle == True or loc.city == True):
             winStatus = False
     return winStatus
 
