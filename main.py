@@ -11,10 +11,16 @@ import random
 def menu(galaxy):
     while checkWin(galaxy):
         galaxy.info()
-        col, row = (input("Enter the coordinates of where you would like to view (ex: A 1)\n or enter 'e' to end the round: ")).split(' ', 1)
-        print("")
         try:
-            galaxy.locations[int(row) - 1][ord(col.lower()) - 97].menu(galaxy, ord(col.lower()) - 97, int(row))
+            inp = input("Enter the coordinates of where you would like to view (ex: A 1)\nor 'e' to end the round,\n'i' for full galactic info: ")
+            if inp.lower() == 'e':
+                galaxy.reactivate()
+            elif inp.lower() == 'i':
+                galaxy.fullInfo()
+            else:
+                col, row = inp.split(' ', 1)
+                print("")
+                galaxy.locations[int(row) - 1][ord(col.lower()) - 97].menu(galaxy, ord(col.lower()) - 97, int(row))
         except: print('Invalid input')
 
 
@@ -43,3 +49,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

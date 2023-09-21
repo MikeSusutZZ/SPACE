@@ -6,9 +6,10 @@ class Galaxy:
     def __init__(self, size):
         self.locations = [[self.determineLoc() for x in range(size)] for y in range(size)]
         homeWorld = Planet()
-        homeWorld.resources = {'C': 3, 'F': 2, 'M': 2, 'K': 0, 'D': 0}
+        homeWorld.resources = {'C': 2, 'F': 2, 'M': 2, 'K': 0, 'D': 0}
         homeWorld.name = 'Home'
         homeWorld.used = False
+        homeWorld.cargo.append('C')
         self.locations[size // 2][size // 2] = homeWorld
 
     def determineLoc(self):
@@ -21,6 +22,17 @@ class Galaxy:
             return Asteroid()
         else:
             return 'Invalid option'
+        
+    def fullInfo(self):
+        for i, row in enumerate(self.locations):
+            # Print the row number and the corresponding letter 'A'
+            
+            
+            for j, loc in enumerate(row):
+                # Print the information for each location in the row
+                print(f"{chr(j + 65)} {i + 1}:")
+                loc.info()
+
         
     def info(self):
         print("      ", end='')
@@ -44,6 +56,10 @@ class Galaxy:
                 print(f"[{locType},{act}] ", end='')
             print("\n")
 
-        
+    def reactivate(self):
+        for col in self.locations:
+            for row in col:
+                row.reactivate()
+    
 
     

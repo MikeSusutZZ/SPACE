@@ -12,6 +12,16 @@ class Planet(Location):
         self.cargo = []
         self.used = True
 
+        self.settle = False
+        self.city = False
+        self.shipYard = False
+
+    def menu(self):
+        self.info()
+        while True:
+            
+            print(f"What would you like to do at this planet?\nA) Move ships\nB) Build a structure")
+
     def reactivate(self):
         super().reactivate()
         self.used = False
@@ -21,22 +31,11 @@ class Planet(Location):
         self.cargo.sort()
         for key, value in self.resources.items():
             print(f"{key} {value}, ", end='')
-        print("\n")
         for res in self.cargo:
-            print(f"{res}, ", end='')
+            print(f"{res} ", end='')
         print("")
         self.printShips()
-        print(f"\n")
-
-    # def unloadShip(self, shipIndex, cargoIndexArray):
-    #     tarShip = self.ships[shipIndex]
-    #     for cargoIndex in cargoIndexArray:
-    #         self.cargo.append(tarShip.unload(cargoIndex))
-
-    # def loadShip(self, shipIndex, cargoIndexArray):
-    #     tarShip = self.ships[shipIndex]
-    #     for cargoIndex in cargoIndexArray:
-    #         tarShip.load(self.cargo.pop(cargoIndex))
+        print(f"")
             
 
     def moveCargo(self, shipIndex, goingToPlanet, goingToShip):
@@ -129,9 +128,9 @@ hit enter to continue...''')
         if type == 'C' or type == 'F':
             if roll <= 3:
                 return 1
-            elif roll == 4 or roll == 5 or roll == 6:
+            elif roll >= 4 and roll < 6:
                 return 2
-            elif roll == 7:
+            elif roll == 6:
                 return 3
             else: return 0
  

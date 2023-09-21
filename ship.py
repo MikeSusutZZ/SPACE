@@ -14,15 +14,17 @@ class Ship:
     def moved(self):
         for resource in self.cargo:
             if resource == 'F':
-                #self.deactivate()
+                self.deactivate()
                 self.cargo.remove(resource)
                 return True
         print("No fuel")
         return False
 
     def info(self):
+        used = '*'
+        if self.used: used = ''
         self.cargo.sort()
-        print(f"{self.shipType} ", end='')
+        print(f"{used}{self.shipType} ", end='')
         for resource in self.cargo:
             print(resource, end="")
         print("")

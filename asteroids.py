@@ -8,6 +8,7 @@ class Asteroid(Location):
     def info(self):
         print("Asteroid field")
         self.printShips()
+        print('')
 
     def reactivate(self):
         super().reactivate
