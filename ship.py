@@ -1,8 +1,8 @@
 class Ship:
-    def __init__(self):
+    def __init__(self, type):
         self.cargo = []
         self.cargoSize = 6
-        self.shipType = "Cargo"
+        self.shipType = type
         self.used = False
 
     def reactivate(self):

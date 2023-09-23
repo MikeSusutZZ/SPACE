@@ -1,19 +1,20 @@
 from location import Location
 import random
+import costs
+from menu import Menu
+from shipYard import ShipYard
 
 class Planet(Location):
     
     def __init__(self):
         super().__init__()
         self.resources = {"C": self.genResources('C'), "F": self.genResources('F'),
-                            "M": self.genResources('M'), "K": self.genResources('K'),
-                            "D": self.genResources('D')}
+                            "M": self.genResources('M'), "K": self.genResources('K')}
         self.name = genName()
         self.cargo = []
         self.usage = 0
 
-        self.settle = False
-        self.city = False
+        self.civLevel = 0
         self.shipYard = False
 
     def menu(self, galaxy, col, row):
@@ -45,12 +46,35 @@ class Planet(Location):
             else: print("Not a valid input")
         
 
-            
+    def buildMenu(self):
+        def upgradeCity(arg):
+            if costs.payCost(self.cargo,costs.cityUpgrade(self.civLevel)):
+                self.civLevel += 1
+            else: print("You don't have the required resources")
+        def buildCity(arg):
+            if costs.payCost(self.cargo, costs.city()):
+                self.civLevel += 1
+            else: print("You don't have the required resources")
+        def buildShipYard(arg):
+            if costs.payCost(self.cargo, costs.shipYard()):
+                self.shipYard = ShipYard()
+            else: print("You don't have the required resources")
+        def upgradeShipYard(arg):
+            if costs.payCost(costs.shipYardUpgrade(self.cargo,self.shipYard.level)):
+                self.shipYard.level += 1
+            else: print("You don't have the required resources")
+        
+        builtCity = self.civLevel > 0
+        builtShipYard = bool(self.shipYard)
+
+        menu = Menu("What would you like to build?", "Enter your choice or 'x' to exit: ", inputType='let', breakAfterEx=False)    
+        menu.addOptionalItems(["Start a city", 'Upgrade your city'], [buildCity, upgradeCity], [False, True])
+        menu.addOptionalItems(["Build a ship yard", "Upgrade your ship yard"], [buildShipYard, upgradeShipYard], [False, True])
+        menu.menu([[builtCity], [builtShipYard]])
 
     def reactivate(self):
         super().reactivate()
-        if self.city: self.usage = 3
-        elif self.settle: self.usage = 1
+        self.usage = self.civLevel
 
     def info(self, col, row):
         print(f"{chr(col + 65)} {row}) ")

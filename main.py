@@ -42,7 +42,7 @@ def main():
     random.seed(seed)
 
     galaxy = Galaxy(5)
-    ship = Ship()
+    ship = Ship('Cargo')
     ship.cargo.append("F")
     galaxy.locations[2][2].shipArrives(ship)
     menu(galaxy)
