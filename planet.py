@@ -86,8 +86,16 @@ class Planet(Location):
         for res in self.cargo:
             print(f"{res} ", end='')
         print("")
+        self.printStructures()
         self.printShips()
         print(f"")
+    
+    def printStructures(self):
+        print(f"Structures on this planet:")
+        if self.civLevel:
+            print(f"City level: {self.civLevel}")
+        if self.shipYard:
+            print(f"Ship yard level: {self.shipYard.level}")
     
 
     def loadingMenu(self, col, row):
@@ -183,11 +191,11 @@ hit enter to continue...''')
             if resource == 'C':
                 self.usage -= 1
                 self.cargo.remove(resource)
-
                 result = []
                 for key, value in self.resources.items():
                     result.extend([key] * value)
                 self.cargo.extend(result)
+                return
         # if it has not found a consumable and returned
         print("No consumables to activate planet")
         

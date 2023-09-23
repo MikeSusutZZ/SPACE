@@ -8,8 +8,9 @@ class Galaxy:
         homeWorld = Planet()
         homeWorld.resources = {'C': 2, 'F': 2, 'M': 2, 'K': 0, 'D': 0}
         homeWorld.name = 'Home'
-        homeWorld.used = False
+        homeWorld.usage = 2
         homeWorld.cargo.append('C')
+        homeWorld.civLevel = 2
         self.locations[size // 2][size // 2] = homeWorld
 
     def determineLoc(self):
