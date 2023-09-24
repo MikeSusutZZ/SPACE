@@ -3,8 +3,9 @@ import random
 import costs
 from menu import Menu
 from shipYard import ShipYard
+from cargoHolding import CargoDisplay
 
-class Planet(Location):
+class Planet(Location, CargoDisplay):
     
     def __init__(self):
         super().__init__()
@@ -35,7 +36,7 @@ class Planet(Location):
         while True:
             keys = []
             if len(self.ships) > 0: keys.append('hasShips')
-            if self.shipYard.level > 0: keys.append('hasShipYard')
+            if self.shipYard.usage > 0: keys.append('canBuildShip')
             if not self.upgraded: keys.append('canBuild')
             if self.usage > 0: keys.append("canHarvest")
 
@@ -50,46 +51,20 @@ class Planet(Location):
                 "Harvest resources"
             ],
             [shipMove, shipLoading, buildShip, buildStructure, doHarvest],
-            ['hasShips','hasShips',"hasShipYard",'canBuild','canHarvest']
+            ['hasShips','hasShips',"canBuildShip",'canBuild','canHarvest']
             )
             planetMenu.addItem("See planetary info", doInfo)
             if not planetMenu.menu([keys], galaxy, col, row): break
-        # while True:
-        #     inp = input(f"What would you like to do at this planet?\nA) Use ships\nB) Build a structure\nC) Harvest Resources\nI) Show info\nX) Leave planet: ").lower()
-        #     if inp == 'a':
-        #         print()
-        #         shipInp = input("Would you like to\nA) Move a ship\nB) Load/Unload a ship\n X) Close").lower()
-        #         while True:
-        #             if shipInp == 'a':
-        #                 super().shipMovementMenu(galaxy, col, row)  
-        #             elif shipInp == 'b' :
-        #                 self.loadingMenu()
-        #             elif shipInp == 'x': break
-        #             else: print("Not a valid input")
-        #     elif inp == 'b':
-        #         print()
-        #         self.buildMenu()
-        #     elif inp == 'c':
-        #         if not self.usage < 1: 
-        #             self.harvest()
-        #         else: 
-        #             print(f"This planet has already been used as much as it can be this turn")
-        #     elif inp == 'i':
-        #         print()
-        #         self.info(col, row)
-        #     elif inp == 'x': 
-        #         break
-        #     else: print("Not a valid input")
         
 
     def buildMenu(self):
-        def upgradeCity(arg):
-            if costs.payCost(self.cargo,costs.cityUpgrade(self.civLevel)):
+        def buildCity(arg):
+            if costs.payCost(self.cargo, costs.city()):
                 self.civLevel += 1
                 self.upgraded = True
             else: print("You don't have the required resources")
-        def buildCity(arg):
-            if costs.payCost(self.cargo, costs.city()):
+        def upgradeCity(arg):
+            if costs.payCost(self.cargo,costs.cityUpgrade(self.civLevel)):
                 self.civLevel += 1
                 self.upgraded = True
             else: print("You don't have the required resources")
@@ -108,8 +83,8 @@ class Planet(Location):
         builtShipYard = self.shipYard.level > 0
 
         buildMenu = Menu("What would you like to build?", inputType='let', breakAfterEx=True)    
-        buildMenu.addOptionalItems([f"Start a city {costs.city()}", f'Upgrade your city {costs.cityUpgrade(self.civLevel)}'], [buildCity, upgradeCity], [False, True])
-        buildMenu.addOptionalItems([f"Build a ship yard {costs.shipYard()}", f"Upgrade your ship yard {costs.shipYardUpgrade(self.shipYard.level)}"], [buildShipYard, upgradeShipYard], [False, True])
+        buildMenu.addOptionalItems([f"Start a city ({self.displayCargo(costs.city())})", f'Upgrade your city ({self.displayCargo(costs.cityUpgrade(self.civLevel))})'], [buildCity, upgradeCity], [False, True])
+        buildMenu.addOptionalItems([f"Build a ship yard ({self.displayCargo(costs.shipYard())})", f"Upgrade your ship yard ({self.displayCargo(costs.shipYardUpgrade(self.shipYard.level))})"], [buildShipYard, upgradeShipYard], [False, True])
         buildMenu.menu([[builtCity], [builtShipYard]])
 
     def reactivate(self):
@@ -121,52 +96,43 @@ class Planet(Location):
     def info(self, col, row):
         print(f"{chr(col + 65)} {row}) ")
         print(f"Planet {self.name}")
-        self.cargo.sort()
         for key, value in self.resources.items():
             print(f"{key} {value}, ", end='')
         print()
-        for res in self.cargo:
-            print(f"{res} ", end='')
-        print("")
+        print(f"Cargo: {self.displayCargo(self.cargo)}")
         self.printStructures()
         self.printShips()
-        print(f"")
     
     def printStructures(self):
         print(f"Structures on this planet:")
         if self.civLevel:
             print(f"City level: {self.civLevel}")
-            print(f"Activations left this turn {self.usage}")
+            print(f"Activations left this turn: {self.usage}")
+        if self.shipYard.level:
+            print(f"Ship yard level: {self.shipYard.level}")
+            print(f"Activations left this turn: {self.shipYard.usage}")
         if self.upgraded: 
             print("This planet has had a structure built or upgraded this turn")
-        if self.shipYard:
-            print(f"Ship yard level: {self.shipYard.level}")
     
 
     def loadingMenu(self, col, row):
         while True:
             self.info(col, row)
-            inp = input("pick a ship you would like to move, or enter 'x' to go back: ").lower()
+            inp = input("pick a ship you would like to load/unload, or enter 'x' to go back: ").lower()
             if inp == 'x': break
             else:
                 try:
-                    self.moveCargo(int(inp) - 1)
-                except: print(f"No ship at index {inp}")
+                    self.moveCargo(int(inp) - 1, [], [])
+                except IndexError as e: print(f"No ship at index {inp} {e}")
 
     def moveCargo(self, shipIndex, goingToPlanet, goingToShip):
         while True:
-            self.cargo.sort()
             tarShip = self.ships[shipIndex - 1]
-            tarShip.cargo.sort()
 
-            print(f"A) {self.name}: " , end='')
-            self.loadingDetails(self.cargo)
-            print(f"B) To be tranfered to {self.name}: ", end='')
-            self.loadingDetails(goingToPlanet)
-            print(f"C) To be transfered to the ship: ", end='')
-            self.loadingDetails(goingToShip)
-            print(f"D) The {tarShip.shipType} ship: ", end='')
-            self.loadingDetails(tarShip.cargo)
+            print(f"A) {self.name}: {self.displayCargo(self.cargo)}")
+            print(f"B) To be tranfered to {self.name}: {self.displayCargo(goingToPlanet)}")
+            print(f"C) To be transfered to the ship: {self.displayCargo(goingToShip)}")
+            print(f"D) The {tarShip.shipType} ship:{self.displayCargo(tarShip.cargo)} ")
 
             inp = input(f"\nWhat resource would you like to move \n(c to finalize, x to cancel, h for help)").lower()
             # complete the move
@@ -175,7 +141,6 @@ class Planet(Location):
                 if len(tarShip.cargo) + len(goingToShip) > tarShip.cargoSize:
                     print(f"A {tarShip.shipType} doesn't have enough cargo space to hold all of that")
                     print(f"Please reduce the amount of resources going to the ship to a total of {tarShip.cargoSize}")
-                    self.moveCargo(shipIndex, goingToPlanet, goingToShip)
                 else:
                     self.cargo.extend(goingToPlanet)
                     tarShip.cargo.extend(goingToShip)
@@ -190,30 +155,33 @@ class Planet(Location):
             # Help
             elif inp == 'h':
                 self.loadingHelp()
-                self.moveCargo(shipIndex, goingToPlanet, goingToShip)
 
             # Transfer Resources
             else:
                 try:
                     takingFrom, resource = inp.split(" ", 1)
-                    resource = int(resource)
                     if takingFrom == 'a':
-                        goingToShip.append(self.cargo.pop(resource))
+                        self.sendResource(resource, self.cargo, goingToShip)
                     elif takingFrom == 'b':
-                        tarShip.cargo.append(goingToPlanet.pop(resource))
+                        self.sendResource(resource, goingToPlanet, tarShip.cargo)
                     elif takingFrom == 'c':
-                        self.cargo.append(goingToShip.pop(resource))
+                        self.sendResource(resource, goingToShip, self.cargo)
                     elif takingFrom == 'd':
-                        goingToPlanet.cargo.append(tarShip.cargo.pop(resource))
+                        self.sendResource(resource, tarShip.cargo, goingToPlanet)
                     else:
                         print(f"There was an issue with your input (Likely not the correct letter)")
                         input("hit enter to continue")
-                except:
-                    print(f"There was an issue with your input")
+                except ValueError as e:
+                    print(f"There was an issue with your input {e}")
                     input("hit enter to continue")
                     
+    def sendResource(self, targetRes, takeFrom, sendTo):
+        for i, res in enumerate(takeFrom):
+            if res == targetRes.upper():
+                sendTo.append(takeFrom.pop(i))
+                break
 
-    def loadingHelp():
+    def loadingHelp(self):
         print(f'''To input what you want to move, enter 2 values at once separated by a space:
 First the location you are taking a resource from, denoted by the letter
 next to where the cargo is printed (ex. Planet = A)
@@ -224,12 +192,6 @@ before the move is finalized
 hit enter to continue...''')
         input('')
 
-    def loadingDetails(self, cargo):
-        for i, res in enumerate(cargo):
-            print(f"{i + 1}{res} ", end='')
-            if i % 10 == 9:
-                print('')
-        print('')
         
     def harvest(self):
         for resource in self.cargo:

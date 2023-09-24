@@ -5,7 +5,8 @@ class Asteroid(Location):
     def __init__(self):
         super().__init__()
 
-    def info(self):
+    def info(self, col, row):
+        print(f"{chr(col + 65)} {row}) ")
         print("Asteroid field")
         self.printShips()
         print('')

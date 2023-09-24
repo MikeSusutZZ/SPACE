@@ -22,7 +22,7 @@ class Location:
                 
 
     def printShips(self):
-        print("Ships at this location")
+        print("Ships at this location:")
         for i in range(0, len(self.ships)):
                 print(f"{i + 1}) ", end='')
                 self.ships[i].info()
@@ -31,7 +31,7 @@ class Location:
 
     def info(self, col, row):
          print(f"{chr(col + 65)} {row}) ")
-         print("Nothing but here but empty space and whatever you brought with you")
+         print("Nothing here but empty space and whatever you brought with you")
          self.printShips()
          print('')
 

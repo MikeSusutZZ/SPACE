@@ -1,4 +1,6 @@
-class Ship:
+from cargoHolding import CargoDisplay
+
+class Ship(CargoDisplay):
     def __init__(self, type):
         self.cargo = []
         self.cargoSize = 6
@@ -23,10 +25,8 @@ class Ship:
     def info(self):
         used = '*'
         if self.used: used = ''
-        self.cargo.sort()
         print(f"{used}{self.shipType} ", end='')
-        for resource in self.cargo:
-            print(resource, end="")
+        print(self.displayCargo(self.cargo))
         print("")
 
 

@@ -5,9 +5,6 @@ from galaxy import Galaxy
 import random
     
 
-
-
-
 def menu(galaxy):
     while checkWin(galaxy):
         galaxy.info()

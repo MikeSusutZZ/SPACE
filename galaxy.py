@@ -6,7 +6,7 @@ class Galaxy:
     def __init__(self, size):
         self.locations = [[self.determineLoc() for x in range(size)] for y in range(size)]
         homeWorld = Planet()
-        homeWorld.resources = {'C': 2, 'F': 2, 'M': 2, 'K': 0, 'D': 0}
+        homeWorld.resources = {'C': 2, 'F': 2, 'M': 2, 'K': 0}
         homeWorld.name = 'Home'
         homeWorld.usage = 2
         homeWorld.cargo.append('C')
@@ -31,8 +31,8 @@ class Galaxy:
             
             for j, loc in enumerate(row):
                 # Print the information for each location in the row
-                print(f"{chr(j + 65)} {i + 1}:")
-                loc.info()
+                # print(f"{chr(j + 65)} {i + 1}:")
+                loc.info(j,i + 1)
 
         
     def info(self):
