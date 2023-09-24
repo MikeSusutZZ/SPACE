@@ -1,3 +1,5 @@
+# Designed by Mike Susut, (ZippidyZap, MikeSusutZZ)
+
 class Menu():
     """
     A class that represents a Menu with various menu items.
@@ -14,7 +16,7 @@ class Menu():
         The type of menu - either 'let' or 'num'.
     """
     
-    def __init__(self, open, close = "Which do you choose: ", items = [], inputType = "num", breakAfterEx = False):
+    def __init__(self, open, close = "Which do you choose: ", inputType = "num", breakAfterEx = True):
         """
         Initializes a new Menu instance.
 
@@ -33,7 +35,7 @@ class Menu():
 
         When X is given, it will always exit the menu
         """
-        self._items = items
+        self._items = []
         self._open = open
         self._close = close
         if inputType != 'let' and inputType != 'num':
@@ -98,8 +100,9 @@ class Menu():
                 if self._type == 'let':
                     index = chr(i + 65)
                 print(f"{index}) {item.getStatement()}")
+            print("X) Exit")
             inp = input(self._close).upper()
-            if inp == 'X': break
+            if inp == 'X': return False
             print()
             orgInp = inp
             if self._type == 'num':
@@ -108,7 +111,7 @@ class Menu():
                 inp = ord(inp) - 65
             try:
                 convertedList[inp].doAction(args)
-                if self.breakAfterEx: break
+                if self.breakAfterEx: return True
             except Exception as e:
                 print(f"Error: {e}")
                 print(f"{orgInp} is not a valid entry")

@@ -27,7 +27,7 @@ def menu(galaxy):
 def checkWin(galaxy):
     winStatus = True
     for loc in galaxy.locations:
-        if isinstance(loc, Planet) and (loc.settle == True or loc.city == True):
+        if isinstance(loc, Planet) and (loc.civLevel > 0):
             winStatus = False
     return winStatus
 
@@ -40,11 +40,12 @@ def main():
         seed = random.randint(0,1000)
         print(f"seed randomly set to {seed}\n")
     random.seed(seed)
-
-    galaxy = Galaxy(5)
-    ship = Ship('Cargo')
-    ship.cargo.append("F")
-    galaxy.locations[2][2].shipArrives(ship)
+    while True:
+        try: 
+            size = int(input("What size galaxy would you like?(rec. 5 for new players): "))
+            break
+        except: print(f"That wasn't a valid input, please enter a whole number")
+    galaxy = Galaxy(size)
     menu(galaxy)
 
 if __name__ == "__main__":

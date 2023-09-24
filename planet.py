@@ -13,68 +13,110 @@ class Planet(Location):
         self.name = genName()
         self.cargo = []
         self.usage = 0
+        self.upgraded = False
 
         self.civLevel = 0
-        self.shipYard = False
+        self.shipYard = ShipYard(self)
 
     def menu(self, galaxy, col, row):
-        self.info(col, row)
+
+        def shipMove(arg):
+            super(Planet, self).shipMovementMenu(arg[0], arg[1], arg[2])
+        def shipLoading(arg):
+            self.loadingMenu(arg[1], arg[2])
+        def buildShip(arg):
+            self.shipYard.menu(self)
+        def buildStructure(arg):
+            self.buildMenu()
+        def doHarvest(arg):
+            self.harvest()
+        def doInfo(arg):
+            self.info(arg[1], arg[2])
         while True:
-            inp = input(f"What would you like to do at this planet?\nA) Use ships\nB) Build a structure\nC) Harvest Resources\nI) Show info\nX) Leave planet: ").lower()
-            if inp == 'a':
-                print()
-                shipInp = input("Would you like to\nA) Move a ship\nB) Load/Unload a ship\n X) Close").lower()
-                while True:
-                    if shipInp == 'a':
-                        super().shipMovementMenu(galaxy, col, row)  
-                    elif shipInp == 'b' :
-                        self.loadingMenu()
-                    elif shipInp == 'x': break
-                    else: print("Not a valid input")
-            elif inp == 'b':
-                print()
-                self.buildMenu()
-            elif inp == 'c':
-                if not self.usage < 1: 
-                    self.harvest()
-                else: 
-                    print(f"This planet has already been used as much as it can be this turn")
-            elif inp == 'i':
-                self.info(col, row)
-            elif inp == 'x': 
-                break
-            else: print("Not a valid input")
+            keys = []
+            if len(self.ships) > 0: keys.append('hasShips')
+            if self.shipYard.level > 0: keys.append('hasShipYard')
+            if not self.upgraded: keys.append('canBuild')
+            if self.usage > 0: keys.append("canHarvest")
+
+            self.info(col, row)
+            planetMenu = Menu("What would you like to do on this planet?", inputType='let')
+            
+            planetMenu.addOptionalItems([
+                "Move a ship",
+                "Load a ship",
+                "Build a ship",
+                "Build or upgrade a structure",
+                "Harvest resources"
+            ],
+            [shipMove, shipLoading, buildShip, buildStructure, doHarvest],
+            ['hasShips','hasShips',"hasShipYard",'canBuild','canHarvest']
+            )
+            planetMenu.addItem("See planetary info", doInfo)
+            if not planetMenu.menu([keys], galaxy, col, row): break
+        # while True:
+        #     inp = input(f"What would you like to do at this planet?\nA) Use ships\nB) Build a structure\nC) Harvest Resources\nI) Show info\nX) Leave planet: ").lower()
+        #     if inp == 'a':
+        #         print()
+        #         shipInp = input("Would you like to\nA) Move a ship\nB) Load/Unload a ship\n X) Close").lower()
+        #         while True:
+        #             if shipInp == 'a':
+        #                 super().shipMovementMenu(galaxy, col, row)  
+        #             elif shipInp == 'b' :
+        #                 self.loadingMenu()
+        #             elif shipInp == 'x': break
+        #             else: print("Not a valid input")
+        #     elif inp == 'b':
+        #         print()
+        #         self.buildMenu()
+        #     elif inp == 'c':
+        #         if not self.usage < 1: 
+        #             self.harvest()
+        #         else: 
+        #             print(f"This planet has already been used as much as it can be this turn")
+        #     elif inp == 'i':
+        #         print()
+        #         self.info(col, row)
+        #     elif inp == 'x': 
+        #         break
+        #     else: print("Not a valid input")
         
 
     def buildMenu(self):
         def upgradeCity(arg):
             if costs.payCost(self.cargo,costs.cityUpgrade(self.civLevel)):
                 self.civLevel += 1
+                self.upgraded = True
             else: print("You don't have the required resources")
         def buildCity(arg):
             if costs.payCost(self.cargo, costs.city()):
                 self.civLevel += 1
+                self.upgraded = True
             else: print("You don't have the required resources")
         def buildShipYard(arg):
             if costs.payCost(self.cargo, costs.shipYard()):
-                self.shipYard = ShipYard()
+                self.shipYard.level += 1
+                self.upgraded = True
             else: print("You don't have the required resources")
         def upgradeShipYard(arg):
-            if costs.payCost(costs.shipYardUpgrade(self.cargo,self.shipYard.level)):
+            if costs.payCost(costs.shipYardUpgrade(self.cargo, self.shipYard.level)):
                 self.shipYard.level += 1
+                self.upgraded = True
             else: print("You don't have the required resources")
         
         builtCity = self.civLevel > 0
-        builtShipYard = bool(self.shipYard)
+        builtShipYard = self.shipYard.level > 0
 
-        menu = Menu("What would you like to build?", "Enter your choice or 'x' to exit: ", inputType='let', breakAfterEx=False)    
-        menu.addOptionalItems(["Start a city", 'Upgrade your city'], [buildCity, upgradeCity], [False, True])
-        menu.addOptionalItems(["Build a ship yard", "Upgrade your ship yard"], [buildShipYard, upgradeShipYard], [False, True])
-        menu.menu([[builtCity], [builtShipYard]])
+        buildMenu = Menu("What would you like to build?", inputType='let', breakAfterEx=True)    
+        buildMenu.addOptionalItems([f"Start a city {costs.city()}", f'Upgrade your city {costs.cityUpgrade(self.civLevel)}'], [buildCity, upgradeCity], [False, True])
+        buildMenu.addOptionalItems([f"Build a ship yard {costs.shipYard()}", f"Upgrade your ship yard {costs.shipYardUpgrade(self.shipYard.level)}"], [buildShipYard, upgradeShipYard], [False, True])
+        buildMenu.menu([[builtCity], [builtShipYard]])
 
     def reactivate(self):
         super().reactivate()
+        self.shipYard.reactivate()
         self.usage = self.civLevel
+        self.upgraded = False
 
     def info(self, col, row):
         print(f"{chr(col + 65)} {row}) ")
@@ -94,6 +136,9 @@ class Planet(Location):
         print(f"Structures on this planet:")
         if self.civLevel:
             print(f"City level: {self.civLevel}")
+            print(f"Activations left this turn {self.usage}")
+        if self.upgraded: 
+            print("This planet has had a structure built or upgraded this turn")
         if self.shipYard:
             print(f"Ship yard level: {self.shipYard.level}")
     

@@ -52,7 +52,7 @@ class Galaxy:
                     locType = 'P'
                 elif isinstance(loc, Asteroid):
                     locType = 'A' 
-                if isinstance(loc, Planet) and not loc.usage > 0:
+                if isinstance(loc, Planet) and loc.usage > 0:
                     act = '*'
                 print(f"[{locType},{act}] ", end='')
             print("\n")
