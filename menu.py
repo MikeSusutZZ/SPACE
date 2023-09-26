@@ -145,7 +145,7 @@ class Menu():
                     convertedList.extend(item.getItems())
                 else: convertedList.append(item)
             for i, item in enumerate(convertedList):
-                index = i
+                index = i + 1
                 if self._type == 'let':
                     index = chr(i + 65)
                 print(f"{index}) {item.getStatement()}")
@@ -155,7 +155,7 @@ class Menu():
             print()
             orgInp = inp
             if self._type == 'num':
-                inp = int(inp)
+                inp = int(inp) - 1
             else:
                 inp = ord(inp) - 65
             try:
@@ -231,8 +231,8 @@ class OptionalRepeatedItems:
     def getItems(self):
         retList = []
         for i, obj in enumerate(self.objectList):
-            if self.deter(obj):
-                retList.append(MenuItem(self.getName(obj), self.action, i))
+            if self.deter(obj, i):
+                retList.append(MenuItem(self.getName(obj, i), self.action, i))
         return retList
 
 
