@@ -75,6 +75,25 @@ class Menu():
             itemList.append(MenuItem(statementList[i], actionList[i]))
         self._items.append(OptionalMenuItems(itemList, keys))
 
+    def addOptionalRepeatedItems(self, objectList, action, showWhenFun, getNameFun):
+        """
+        Adds a group of items via a list of objects into the menu, 
+        designed for when you have a variable size list of objects that all have the same 
+        method, but you only want to show certain ones depending on a boolean
+        """
+        self._items.append(OptionalRepeatedItems(objectList, action, showWhenFun, getNameFun))
+            
+            
+        
+    def addRepeatedItems(self, objectList, action, getNameFun):
+        """
+        Adds a group of items via a list of objects into the menu, 
+        designed for when you have a variable size list of objects that all have the same 
+        method 
+        """
+        self._items.append(RepeatedItems(objectList, action, getNameFun))
+
+
     def menu(self, keys, *args):
         """
         Display and handle the menu operations.
@@ -94,6 +113,8 @@ class Menu():
                 if isinstance(item, OptionalMenuItems):
                     convertedList.extend(item.getItems(keys[keyIndex]))
                     keyIndex += 1
+                elif isinstance(item, OptionalRepeatedItems) or isinstance(item, RepeatedItems):
+                    convertedList.extend(item.getItems())
                 else: convertedList.append(item)
             for i, item in enumerate(convertedList):
                 index = i
@@ -140,6 +161,19 @@ class MenuItem():
 
     def getAction(self):
         return self._action
+    
+class RepeatedItems:
+    def __init__(self, objectList, getNameFun, action):
+        self.objectList = objectList
+        self.action = action
+        self.getName = getNameFun
+
+    def getItems(self):
+        retList = []
+        for obj in self.objectList:
+            retList = MenuItem(self.getName(obj), self.action)
+        return retList
+
 
 class OptionalMenuItems():
     def __init__(self, items, keys):
@@ -151,6 +185,27 @@ class OptionalMenuItems():
     
     def getItems(self, keys):
         return [self.itemList[key] for key in keys if key in self.itemList]
+    
+class OptionalRepeatedItems():
+    def __init__(self, objectList, action, determinorBooleanFun, getNameFun):
+        self.objectList = objectList
+        self.action = action
+        self.deter = determinorBooleanFun
+        self.getName = getNameFun
+
+    def getItems(self):
+        retList = []
+        for obj in self.objectList:
+            if self.deter(obj):
+                retList = MenuItem(self.getName(obj), self.action)
+        return retList
+
+
+
+
+
+
+
 
         
             

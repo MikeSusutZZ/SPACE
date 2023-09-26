@@ -21,6 +21,8 @@ class Planet(Location, CargoDisplay):
 
     def menu(self, galaxy, col, row):
 
+        def shipMenu(arg):
+            self.shipMenu(arg)
         def shipMove(arg):
             super(Planet, self).shipMovementMenu(arg[0], arg[1], arg[2])
         def shipLoading(arg):
@@ -55,7 +57,8 @@ class Planet(Location, CargoDisplay):
             )
             planetMenu.addItem("See planetary info", doInfo)
             if not planetMenu.menu([keys], galaxy, col, row): break
-        
+    def shipMenu(self, args):
+        shipMenu = Menu("Available Ships")
 
     def buildMenu(self):
         def buildCity(arg):
@@ -116,64 +119,70 @@ class Planet(Location, CargoDisplay):
     
 
     def loadingMenu(self, col, row):
-        while True:
-            self.info(col, row)
-            inp = input("pick a ship you would like to load/unload, or enter 'x' to go back: ").lower()
-            if inp == 'x': break
-            else:
-                try:
-                    self.moveCargo(int(inp) - 1, [], [])
-                except IndexError as e: print(f"No ship at index {inp} {e}")
+
+        def doMoveCargo(args):
+            self.moveCargo(args[0], [], [])
+        
+        shipOptions = Menu("Available Ships")
+        # while True:
+        #     self.info(col, row)
+        #     inp = input("pick a ship you would like to load/unload, or enter 'x' to go back: ").lower()
+        #     if inp == 'x': break
+        #     else:
+        #         try:
+        #             self.moveCargo(int(inp) - 1, [], [])
+        #         except IndexError as e: print(f"No ship at index {inp} {e}")
 
     def moveCargo(self, shipIndex, goingToPlanet, goingToShip):
-        while True:
-            tarShip = self.ships[shipIndex - 1]
+        tarShip = self.ships[shipIndex - 1]
+        if not tarShip.used:
+            while True:
+                print(f"A) {self.name}: {self.displayCargo(self.cargo)}")
+                print(f"B) To be tranfered to {self.name}: {self.displayCargo(goingToPlanet)}")
+                print(f"C) To be transfered to the ship: {self.displayCargo(goingToShip)}")
+                print(f"D) The {tarShip.shipType} ship:{self.displayCargo(tarShip.cargo)} ")
 
-            print(f"A) {self.name}: {self.displayCargo(self.cargo)}")
-            print(f"B) To be tranfered to {self.name}: {self.displayCargo(goingToPlanet)}")
-            print(f"C) To be transfered to the ship: {self.displayCargo(goingToShip)}")
-            print(f"D) The {tarShip.shipType} ship:{self.displayCargo(tarShip.cargo)} ")
-
-            inp = input(f"\nWhat resource would you like to move \n(c to finalize, x to cancel, h for help)").lower()
-            # complete the move
-            if inp == 'c':
-                # checking overpacking the ship
-                if len(tarShip.cargo) + len(goingToShip) > tarShip.cargoSize:
-                    print(f"A {tarShip.shipType} doesn't have enough cargo space to hold all of that")
-                    print(f"Please reduce the amount of resources going to the ship to a total of {tarShip.cargoSize}")
-                else:
-                    self.cargo.extend(goingToPlanet)
-                    tarShip.cargo.extend(goingToShip)
-                    tarShip.deactivate()
-                    break
-            # Cancel the move, return ships to their old values
-            elif inp == 'x':
-                self.cargo.extend(goingToShip)
-                tarShip.cargo.extend(goingToPlanet)
-                break
-
-            # Help
-            elif inp == 'h':
-                self.loadingHelp()
-
-            # Transfer Resources
-            else:
-                try:
-                    takingFrom, resource = inp.split(" ", 1)
-                    if takingFrom == 'a':
-                        self.sendResource(resource, self.cargo, goingToShip)
-                    elif takingFrom == 'b':
-                        self.sendResource(resource, goingToPlanet, tarShip.cargo)
-                    elif takingFrom == 'c':
-                        self.sendResource(resource, goingToShip, self.cargo)
-                    elif takingFrom == 'd':
-                        self.sendResource(resource, tarShip.cargo, goingToPlanet)
+                inp = input(f"\nWhat resource would you like to move \n(c to finalize, x to cancel, h for help)").lower()
+                # complete the move
+                if inp == 'c':
+                    # checking overpacking the ship
+                    if len(tarShip.cargo) + len(goingToShip) > tarShip.cargoSize:
+                        print(f"A {tarShip.shipType} doesn't have enough cargo space to hold all of that")
+                        print(f"Please reduce the amount of resources going to the ship to a total of {tarShip.cargoSize}")
                     else:
-                        print(f"There was an issue with your input (Likely not the correct letter)")
+                        self.cargo.extend(goingToPlanet)
+                        tarShip.cargo.extend(goingToShip)
+                        tarShip.deactivate()
+                        break
+                # Cancel the move, return ships to their old values
+                elif inp == 'x':
+                    self.cargo.extend(goingToShip)
+                    tarShip.cargo.extend(goingToPlanet)
+                    break
+
+                # Help
+                elif inp == 'h':
+                    self.loadingHelp()
+
+                # Transfer Resources
+                else:
+                    try:
+                        takingFrom, resource = inp.split(" ", 1)
+                        if takingFrom == 'a':
+                            self.sendResource(resource, self.cargo, goingToShip)
+                        elif takingFrom == 'b':
+                            self.sendResource(resource, goingToPlanet, tarShip.cargo)
+                        elif takingFrom == 'c':
+                            self.sendResource(resource, goingToShip, self.cargo)
+                        elif takingFrom == 'd':
+                            self.sendResource(resource, tarShip.cargo, goingToPlanet)
+                        else:
+                            print(f"There was an issue with your input (Likely not the correct letter)")
+                            input("hit enter to continue")
+                    except ValueError as e:
+                        print(f"There was an issue with your input {e}")
                         input("hit enter to continue")
-                except ValueError as e:
-                    print(f"There was an issue with your input {e}")
-                    input("hit enter to continue")
+        else: print(f"That ship has already been used this turn")
                     
     def sendResource(self, targetRes, takeFrom, sendTo):
         for i, res in enumerate(takeFrom):
