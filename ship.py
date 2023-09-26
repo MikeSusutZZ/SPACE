@@ -42,3 +42,6 @@ class Ship(CargoDisplay):
         if len(self.cargo) < self.cargoLimit:
             self.cargo.append(resource)
         else: return False
+
+    def individualMenu(self, args):
+        print(f"We made it to indv menu!")

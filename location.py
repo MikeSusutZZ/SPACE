@@ -1,4 +1,5 @@
 import random
+from menu import Menu
 
 class Location:
     def __init__(self):
@@ -42,6 +43,17 @@ class Location:
             #print(f"Moved the ship to {col}, {row}")
         except Exception as e:
             print(f"Unable to move that direction. Error: {e}\n")
+
+    def shipMenu(self, galaxy, col, row):
+        def goIndMenu(args, shipIndex):
+            self.ships[shipIndex].individualMenu(args)
+        def unused(args, shipIndex):
+            return not self.ships[shipIndex].used
+        def getType(args, shipIndex):
+            return self.ships[shipIndex].shipType
+        shipMenu = Menu("Available Ships", "Which would you like to use?: ")
+        shipMenu.addOptionalRepeatedItems(self.ships, goIndMenu, unused, getType)
+        shipMenu.menu([[]], galaxy, col, row)
 
     def shipMovementMenu(self, galaxy, col, row):
         while True:

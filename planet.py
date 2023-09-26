@@ -21,8 +21,8 @@ class Planet(Location, CargoDisplay):
 
     def menu(self, galaxy, col, row):
 
-        def shipMenu(arg):
-            self.shipMenu(arg)
+        def doShipMenu(arg):
+            self.shipMenu(arg[0], arg[1], arg[2])
         def shipMove(arg):
             super(Planet, self).shipMovementMenu(arg[0], arg[1], arg[2])
         def shipLoading(arg):
@@ -37,7 +37,9 @@ class Planet(Location, CargoDisplay):
             self.info(arg[1], arg[2])
         while True:
             keys = []
-            if len(self.ships) > 0: keys.append('hasShips')
+            for ship in self.ships:
+                if not ship.used: keys.append('hasShips')
+                break
             if self.shipYard.usage > 0: keys.append('canBuildShip')
             if not self.upgraded: keys.append('canBuild')
             if self.usage > 0: keys.append("canHarvest")
@@ -46,19 +48,18 @@ class Planet(Location, CargoDisplay):
             planetMenu = Menu("What would you like to do on this planet?", inputType='let')
             
             planetMenu.addOptionalItems([
-                "Move a ship",
-                "Load a ship",
+                "Use ships",
                 "Build a ship",
                 "Build or upgrade a structure",
                 "Harvest resources"
             ],
-            [shipMove, shipLoading, buildShip, buildStructure, doHarvest],
-            ['hasShips','hasShips',"canBuildShip",'canBuild','canHarvest']
+            [doShipMenu, buildShip, buildStructure, doHarvest],
+            ['hasShips',"canBuildShip",'canBuild','canHarvest']
             )
             planetMenu.addItem("See planetary info", doInfo)
             if not planetMenu.menu([keys], galaxy, col, row): break
-    def shipMenu(self, args):
-        shipMenu = Menu("Available Ships")
+
+
 
     def buildMenu(self):
         def buildCity(arg):
