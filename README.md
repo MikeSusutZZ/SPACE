@@ -3,7 +3,9 @@
 
 ## This is currently not working yet and is in progress
 
-*After untold years, our seed ship has finally located us a home and ended our cryostasis. This new galaxy is full of possibility, resources and dangers, and all of it is yours to conquer*
+*After untold years, our seed ship has finally located us a home and ended our cryostasis. This new galaxy is full of possibilities, resources, and dangers.*
+
+***And all of it is yours to conquer***
 
 This is a text based board game that places you at the head of a fledgling colony in a galaxy full of planets with resources that will help you expand further into the galaxy. The goal is to have settlements or cities on every planet in the galaxy in as few turns as possible. This game was inspired by the thought of "What if Catan made you move resources from their sources to the location you are building, rather than putting them in your hand?", followed by failed prototypes that resulted in too much info in too small of physical space. Additionally, it came from trying to play 4X space games and getting fed up with the insanely high learning curve and the sheer amount of information being thrown at you.
 
@@ -12,42 +14,25 @@ This is a text based board game that places you at the head of a fledgling colon
 The galaxy is a 15x15 board with each spot consisting of either a planet, an asteriod field, or simply empty space. The board is entirely random, so it may be possible for a galaxy to be created that is not possible to finish.
 
 ### Planets, Resources, and Building
-Planets produce any number of the 5 resources: Consumables (C), Metals (M), Fuel (F), Krystals (K), and Discovery (D).
-These resources can be harvested by activating a settlement or city you have built there. 
-** - Consumables (C):** Used to activate settlements and cities to harvest resrources
-** - Metals (M):** Used to build new things
+Planets produce any number of the 4 resources: Consumables (C), Metals (M), Fuel (F), and Krystals (K)
+These resources can be harvested by activating a settlement or city you have built there. They are all used for building, but often have other uses
+** - Consumables (C):** Used to activate cities to harvest resrources
+** - Metals (M):** Only used to build new things
 ** - Fuel (F):** Used to move ships 1 space in a turn
-** - Krystals (K):** Used to build more advanced things, power warp gates, and make ships travel 2 spaces in a turn
-** - Discovery (D):** spent to develop the tech tree
+** - Krystals (K):** Used to build more advanced things, and move ships 2 spaces in one turn
 
 ### Actions
+
+Ships may only take one action per turn
+
 Ships can hold resources in their cargo. This cargo size is different for each ship. Ships have certain actions. All ships have: 
 - Load/Unload: add resources from where they are landed to thier cargo add resources from their cargo to where they are landed
 - Move: Spend one fuel from it's cargo to move one space cardinally
-- Jump: Spend one krystal from it's cargo to move 2 spaces cardinally. These moves are in the same direction.
+- Jump: Spend one krystal from it's cargo to move 2 spaces in the same direction
+- Attack: not yet implemented
 
-Fighters, Dreadnaughts and Turrets may:
-- Attack: Destroy this to destroy a chosen opposing ship, turret, or shield. If a ships has a shield, it must be destroyed first, then turrets, then the ship itself.
+Structures are built on Planets and stay there permanently. Cities and Ship yards are currently the only structures. Both have a level that defines how many actions it can take in a turn
 
-Carriers, Dreadnaughts, and Merchant ships have a docking bay with different sizes where smaller ships may land. They may:
-- Dock: Land ships, shields, warp rings or turrets on the same space on this ship (cannot land other ships with docking, docked shields and turrets cannot be used, only transported)
-- Deploy: Return the landed ships, shields, and turrets to the board.
-
-Carriers, Dreadnaughts, and Advanced ships have a certain amount of mounting points and may:
-- Mount: Add shields, turrets, or warp rings from the same space as this ship to a mounting point (Once something is mounted it may not be removed)
-
-Warp Gates may:
-- Mass Warp: Move any number of ships on this location to the location of any other warp gate
-- Warp Gates are not considered ships and cannot take any other actions, and cannot be docked
-
-Warp Rings may:
-- Individual Warp: Move the ship this is mounted to to the location of any warp gate
-
-### Pieces and Costs
-##### Standard
-- Cargo Ship: MM, cargo 6
-- Fighter: KKMM, cargo 3, attack
-- Turret: KM, mountable
-- Shield: MM, mountable
-- Carrier: 
+- Harvest: Cities may use one consumable to harvest resources from the planet, adding to the planets cargo according to the amounts specified in their information
+- Build ship: Ship yards may spend resources from the planet to build a ship of your choosing. Currently there are only basic cargo ships, but in later versions a higher ship yard level will bring access to other ships 
  
