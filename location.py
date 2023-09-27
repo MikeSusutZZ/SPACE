@@ -46,7 +46,7 @@ class Location:
 
     def shipMenu(self, galaxy, col, row):
         def goIndMenu(args, shipIndex):
-            self.ships[shipIndex].individualMenu(args)
+            self.indShipMenu(args, shipIndex)
         def unused(args, shipIndex):
             return not self.ships[shipIndex].used
         def getType(args, shipIndex):
@@ -55,9 +55,22 @@ class Location:
         shipMenu.addOptionalRepeatedItems(self.ships, goIndMenu, unused, getType)
         shipMenu.menu([[]], galaxy, col, row)
 
-    def shipMovementMenu(self, galaxy, col, row):
+    def indShipMenu(self, args, shipIndex):
+        galaxy = args[0]
+        col = args[1]
+        row = args[2]
+
+        def doMove(arg):
+            self.shipMovementMenu(galaxy, col, row, shipIndex)
+        // ADD LOADING FUNC OPTIONALiTEMaDD BASED ON IF U HAVE FUEL, THEN IF ON PLANET
+        def loadShip
+
+        indMenu = Menu("What would you like to do with the chosen ship?", "Pick an action: ", inputType='let')
+        keys = []
+        actions = [doMove]
+
+    def shipMovementMenu(self, galaxy, col, row, shipIndex):
         while True:
-            self.info(col, row)
             action = input("pick a ship you would like to move, or enter 'x' to go back: ").lower()
             if action == 'x': break
             else:
@@ -77,6 +90,8 @@ class Location:
                         elif dir == 'r':
                             self.moveShip(tarShip, galaxy, col - 1, row)
                             break
+                        elif dir == 's':
+                            tarShip.info()
                         elif dir == 'g':
                             galaxy.info()
                         elif dir == 'x':
