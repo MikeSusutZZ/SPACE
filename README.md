@@ -11,7 +11,7 @@ This is a text based board game that places you at the head of a fledgling colon
 
 ## How it works
 
-The galaxy is a 15x15 board with each spot consisting of either a planet, an asteriod field, or simply empty space. The board is entirely random, so it may be possible for a galaxy to be created that is not possible to finish.
+The galaxy is a grid with each spot consisting of either a planet, an asteriod field, or simply empty space. The board is entirely random, so it may be possible for a galaxy to be created that is not possible to finish.
 
 ### Planets, Resources, and Building
 Planets produce any number of the 4 resources: Consumables (C), Metals (M), Fuel (F), and Krystals (K)
@@ -20,6 +20,16 @@ These resources can be harvested by activating a settlement or city you have bui
 ** - Metals (M):** Only used to build new things
 ** - Fuel (F):** Used to move ships 1 space in a turn
 ** - Krystals (K):** Used to build more advanced things, and move ships 2 spaces in one turn
+
+### The Galactic Map
+The map will show every location in the galaxy. Each location has 2 values, Whether it is a:
+- 'P' Planet
+- 'A' Asteroid Field
+- '_' Empty Space
+The second value is what is available to be activated on the planet (regardless of if you have the resources to do so). They appear in this priority, overwriting the others below it: 
+- '*' Available to harvest
+- '`' Able to build ships
+- '^' Ship available to be used
 
 ### Actions
 

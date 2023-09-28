@@ -189,7 +189,7 @@ class MenuItem():
     
     def doAction(self, *args):
         if self._index is not None:
-            print(f"Trying to do an indexed")
+            # print(f"Trying to do an indexed")
             self._action(*args, self._index)
         else:
             self._action(*args)

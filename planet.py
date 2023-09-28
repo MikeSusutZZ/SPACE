@@ -40,7 +40,7 @@ class Planet(Location, CargoDisplay):
             for ship in self.ships:
                 if not ship.used: keys.append('hasShips')
                 break
-            if self.shipYard.usage > 0: keys.append('canBuildShip')
+            if self.shipYard.usage > 0 and 'M' in self.cargo: keys.append('canBuildShip')
             if not self.upgraded: keys.append('canBuild')
             if self.usage > 0: keys.append("canHarvest")
 
@@ -106,6 +106,7 @@ class Planet(Location, CargoDisplay):
         print(f"Cargo: {self.displayCargo(self.cargo)}")
         self.printStructures()
         self.printShips()
+        print()
     
     def printStructures(self):
         print(f"Structures on this planet:")
@@ -117,33 +118,18 @@ class Planet(Location, CargoDisplay):
             print(f"Activations left this turn: {self.shipYard.usage}")
         if self.upgraded: 
             print("This planet has had a structure built or upgraded this turn")
-    
 
-    def loadingMenu(self, col, row):
-
-        def doMoveCargo(args):
-            self.moveCargo(args[0], [], [])
-        
-        shipOptions = Menu("Available Ships")
-        # while True:
-        #     self.info(col, row)
-        #     inp = input("pick a ship you would like to load/unload, or enter 'x' to go back: ").lower()
-        #     if inp == 'x': break
-        #     else:
-        #         try:
-        #             self.moveCargo(int(inp) - 1, [], [])
-        #         except IndexError as e: print(f"No ship at index {inp} {e}")
 
     def moveCargo(self, shipIndex, goingToPlanet, goingToShip):
-        tarShip = self.ships[shipIndex - 1]
+        tarShip = self.ships[shipIndex]
         if not tarShip.used:
             while True:
                 print(f"A) {self.name}: {self.displayCargo(self.cargo)}")
                 print(f"B) To be tranfered to {self.name}: {self.displayCargo(goingToPlanet)}")
                 print(f"C) To be transfered to the ship: {self.displayCargo(goingToShip)}")
-                print(f"D) The {tarShip.shipType} ship:{self.displayCargo(tarShip.cargo)} ")
+                print(f"D) The {tarShip.shipType} ship: {self.displayCargo(tarShip.cargo)} ")
 
-                inp = input(f"\nWhat resource would you like to move \n(c to finalize, x to cancel, h for help)").lower()
+                inp = input(f"\nWhat resource would you like to move \n(c to finalize, x to cancel, h for help): ").lower()
                 # complete the move
                 if inp == 'c':
                     # checking overpacking the ship
@@ -195,8 +181,8 @@ class Planet(Location, CargoDisplay):
         print(f'''To input what you want to move, enter 2 values at once separated by a space:
 First the location you are taking a resource from, denoted by the letter
 next to where the cargo is printed (ex. Planet = A)
-Then the index of the resource you want to move (If you want the first resource from
-the planet, you have A 1, make sure you give the space!). The resources that are being moved are held in the 'to be transfered' location
+Then the resource you want to move (If you want a Fuel resource from
+the planet, you have A F. make sure you give the space!). The resources that are being moved are held in the 'going to _' spot
 before the move is finalized
               
 hit enter to continue...''')

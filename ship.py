@@ -27,7 +27,12 @@ class Ship(CargoDisplay):
         if self.used: used = ''
         print(f"{used}{self.shipType} ", end='')
         print(self.displayCargo(self.cargo))
-        print("")
+
+    def infoStr(self):
+        used = '*'
+        if self.used: used = ''
+        return f"{self.shipType} {self.displayCargo(self.cargo)}"
+        
 
 
     def printCargo(self):

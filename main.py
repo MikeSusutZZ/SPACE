@@ -6,18 +6,22 @@ import random
     
 
 def menu(galaxy):
+    round = 1
     while checkWin(galaxy):
         galaxy.info()
         try:
             inp = input("Enter the coordinates of where you would like to view (ex: A 1)\nor 'e' to end the round,\n'i' for full galactic info: ")
             if inp.lower() == 'e':
+                round += 1
+                print(f"_______________ Round {round} _______________\n")
+                input("        (Press enter to continue)")
                 galaxy.reactivate()
             elif inp.lower() == 'i':
                 galaxy.fullInfo()
             else:
                 col, row = inp.split(' ', 1)
                 print("")
-                galaxy.locations[int(row) - 1][ord(col.lower()) - 97].menu(galaxy, ord(col.lower()) - 97, int(row))
+                galaxy.locations[int(row) - 1][ord(col.lower()) - 97].menu(galaxy, ord(col.lower()) - 97, int(row) - 1)
         except Exception as e: print(f'Invalid input {e}')
 
 

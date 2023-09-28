@@ -1,5 +1,6 @@
 import random
 from menu import Menu
+from typing import TYPE_CHECKING
 
 class Location:
     def __init__(self):
@@ -38,8 +39,12 @@ class Location:
 
     def moveShip(self, tarShip, galaxy, col, row):
         try:
-            #print(f"Trying to move the ship to {col}, {row}")
-            galaxy.locations[row][col].shipArrives(tarShip)
+            # col += 1
+            # row -= 1
+            print(f"Trying to move the ship to {col}, {row}")
+            if ( not (row < 0 or row > 4 or col < 0 or col > 4)):
+                galaxy.locations[row][col].shipArrives(tarShip)
+            else: print(f"went over")
             #print(f"Moved the ship to {col}, {row}")
         except Exception as e:
             print(f"Unable to move that direction. Error: {e}\n")
@@ -50,7 +55,7 @@ class Location:
         def unused(args, shipIndex):
             return not self.ships[shipIndex].used
         def getType(args, shipIndex):
-            return self.ships[shipIndex].shipType
+            return self.ships[shipIndex].infoStr()
         shipMenu = Menu("Available Ships", "Which would you like to use?: ")
         shipMenu.addOptionalRepeatedItems(self.ships, goIndMenu, unused, getType)
         shipMenu.menu([[]], galaxy, col, row)
@@ -61,34 +66,44 @@ class Location:
         row = args[2]
 
         def doMove(arg):
-            self.shipMovementMenu(galaxy, col, row, shipIndex)
-        // ADD LOADING FUNC OPTIONALiTEMaDD BASED ON IF U HAVE FUEL, THEN IF ON PLANET
-        def loadShip
+            self.shipMovementMenu(galaxy, col, row, shipIndex, 1)
+
+        def doJump(arg):
+            self.shipMovementMenu(galaxy, col, row, shipIndex, 2)
+
+        def loadShip(arg):
+            self.moveCargo(shipIndex, [], [])
 
         indMenu = Menu("What would you like to do with the chosen ship?", "Pick an action: ", inputType='let')
         keys = []
-        actions = [doMove]
+        from planet import Planet
+        if isinstance(self, Planet):
+            keys.append('onPlanet')
+        if 'F' in self.ships[shipIndex].cargo:
+            keys.append('canMove')
+        if 'K' in self.ships[shipIndex].cargo:
+            keys.append('canJump')
+        actions = [doMove, loadShip]
+        #print(f"Keys are {keys}")
+        indMenu.addOptionalItems(['Load / Unload ship', 'Move', 'Jump'], [loadShip, doMove, doJump], ['onPlanet', 'canMove', 'canJump'])
+        indMenu.menu([keys])
 
-    def shipMovementMenu(self, galaxy, col, row, shipIndex):
-        while True:
-            action = input("pick a ship you would like to move, or enter 'x' to go back: ").lower()
-            if action == 'x': break
-            else:
+    def shipMovementMenu(self, galaxy, col, row, shipIndex, moveType):
                 try:
-                    tarShip = self.shipLeaves(int(action) - 1)
+                    tarShip = self.shipLeaves(shipIndex)
                     while True:
                         dir = input("Would you like to go? (u)p, (d)own (l)eft, (r)ight, view (g)alaxy, or 'x' to cancel: ").lower()
                         if dir == 'u':
-                            self.moveShip(tarShip, galaxy, col, row - 2)
+                            self.moveShip(tarShip, galaxy, col, row - moveType)
                             break
                         elif dir == 'd':
-                            self.moveShip(tarShip, galaxy, col + 1, row - 2)
+                            self.moveShip(tarShip, galaxy, col, row + moveType)
                             break
                         elif dir == 'l':
-                            self.moveShip(tarShip, galaxy, col - 1, row - 3)
+                            self.moveShip(tarShip, galaxy, col - moveType, row)
                             break
                         elif dir == 'r':
-                            self.moveShip(tarShip, galaxy, col - 1, row)
+                            self.moveShip(tarShip, galaxy, col + moveType, row)
                             break
                         elif dir == 's':
                             tarShip.info()
@@ -98,9 +113,12 @@ class Location:
                             break
                         else:
                             print("Invalid input")
-                except: print(f"No ship at index {action}")
+                except: print(f"No ship at index")
     
-
+    # THIS NEEDS UPDATED LATER
     def menu(self, galaxy, col, row):
-         self.shipMovementMenu(galaxy, col, row)
-# sorted(self.ships, key=lambda x: x.used) 
+        sorted(self.ships, key=lambda x: x.shipType)
+        self.shipMenu(galaxy, col, row)
+
+            
+             

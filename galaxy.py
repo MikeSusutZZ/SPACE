@@ -6,11 +6,13 @@ class Galaxy:
     def __init__(self, size):
         self.locations = [[self.determineLoc() for x in range(size)] for y in range(size)]
         homeWorld = Planet()
-        homeWorld.resources = {'C': 2, 'F': 2, 'M': 2, 'K': 0}
+        homeWorld.resources = {'C': 2, 'F': 2, 'M': 3, 'K': 0}
         homeWorld.name = 'Home'
-        homeWorld.usage = 2
+        homeWorld.usage = 1
         homeWorld.cargo.append('C')
-        homeWorld.civLevel = 2
+        homeWorld.civLevel = 1
+        homeWorld.shipYard.level = 1
+        homeWorld.shipYard.usage = 1
         self.locations[size // 2][size // 2] = homeWorld
 
     def determineLoc(self):
@@ -52,7 +54,9 @@ class Galaxy:
                     locType = 'P'
                 elif isinstance(loc, Asteroid):
                     locType = 'A' 
-                if isinstance(loc, Planet) and loc.usage > 0:
+                if isinstance(loc, Planet) and loc.shipYard.usage > 0 and 'M' in loc.cargo:
+                    act = '`'
+                if isinstance(loc, Planet) and loc.usage > 0 and 'C' in loc.cargo:
                     act = '*'
                 print(f"[{locType},{act}] ", end='')
             print("\n")
