@@ -103,7 +103,7 @@ class Planet(Location, CargoDisplay):
         self.upgraded = False
 
     def info(self, col, row):
-        print(f"{chr(col + 65)} {row + 1}) ")
+        print(f"{chr(col + 65)} {row}) ")
         print(f"Planet {self.name}")
         for key, value in self.resources.items():
             print(f"{key} {value}, ", end='')
@@ -215,9 +215,9 @@ hit enter to continue...''')
         if type == 'C' or type == 'F' or type == 'M':
             if roll <= 4:
                 return 1
-            elif roll >= 5 and roll < 7:
+            elif roll >= 5 and roll < 8:
                 return 2
-            elif roll == 6 or roll == 7:
+            elif roll == 7 or roll == 8:
                 return 3
             else: return 0
  
@@ -231,11 +231,11 @@ hit enter to continue...''')
         #     else: return 0
 
         elif type == 'K' or type == 'D':
-            if roll <= 3:
+            if roll <= 4:
                 return 1
-            elif roll == 4:
-                return 2
             elif roll == 5:
+                return 2
+            elif roll == 6:
                 return 3
             else: return 0
 

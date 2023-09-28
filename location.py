@@ -123,7 +123,7 @@ class Location:
     # THIS NEEDS UPDATED LATER
     def menu(self, galaxy, col, row):
         sorted(self.ships, key=lambda x: x.shipType)
-        self.info()
+        self.info(col, row)
         self.shipMenu(galaxy, col, row)
 
             

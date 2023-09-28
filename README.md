@@ -7,7 +7,7 @@
 
 ***And all of it is yours to conquer***
 
-This is a text based board game that places you at the head of a fledgling colony in a galaxy full of planets with resources that will help you expand further into the galaxy. The goal is to have settlements or cities on every planet in the galaxy in as few turns as possible. This game was inspired by the thought of "What if Catan made you move resources from their sources to the location you are building, rather than putting them in your hand?", followed by failed prototypes that resulted in too much info in too small of physical space. Additionally, it came from trying to play 4X space games and getting fed up with the insanely high learning curve and the sheer amount of information being thrown at you.
+This is a text based board game that places you at the head of a fledgling colony in a galaxy full of planets with resources that will help you expand further into the galaxy. *The goal is to have cities on every planet in the galaxy in as few turns as possible.* This game was inspired by the thought of "What if Catan made you move resources from their sources to the location you are building, rather than putting them in your hand?", followed by failed prototypes that resulted in too much info in too small of physical space. Additionally, it came from trying to play 4X space games and getting fed up with the insanely high learning curve and the sheer amount of information being thrown at you.
 
 ## How it works
 
@@ -31,8 +31,14 @@ The second value is what is available to be activated on the planet (regardless 
 - '`' Able to build ships
 - '^' Ship available to be used
 
+### Locations
+- Planets: Where structures can be built and resources stored
+- Asteroids: If a ship ends a turn here, there is a 50% chancce of it being **destroyed**!
+- Empty space: Nothing of note, just for you to fly through
+
 ### Actions
 
+#### Ships
 Ships may only take one action per turn
 
 Ships can hold resources in their cargo. This cargo size is different for each ship. Ships have certain actions. All ships have: 
