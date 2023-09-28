@@ -23,6 +23,7 @@ def menu(galaxy):
                 print("")
                 galaxy.locations[int(row) - 1][ord(col.lower()) - 97].menu(galaxy, ord(col.lower()) - 97, int(row) - 1)
         except Exception as e: print(f'Invalid input {e}')
+    print(f"YOU WIN!! You took over the galaxy in {round} rounds")
 
 
 def checkWin(galaxy):
