@@ -45,12 +45,13 @@ class Location:
     def moveShip(self, tarShip, galaxy, col, row):
         try:
             # col += 1
-            # row -= 1
-            print(f"Trying to move the ship to {col}, {row}")
+            row -= 1
+            #print(f"Trying to move the ship to {col}, {row}")
             if ( not (row < 0 or row > 4 or col < 0 or col > 4)):
                 galaxy.locations[row][col].shipArrives(tarShip)
-            else: print(f"went over")
-            #print(f"Moved the ship to {col}, {row}")
+                print(f"Moved the ship to {chr(col + 65)}, {row + 1}")
+            else: print(f"That would take you over the edge of the galaxy!")
+            
         except Exception as e:
             print(f"Unable to move that direction. Error: {e}\n")
 
