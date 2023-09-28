@@ -6,7 +6,7 @@ class Galaxy:
     def __init__(self, size):
         self.locations = [[self.determineLoc() for x in range(size)] for y in range(size)]
         homeWorld = Planet()
-        homeWorld.resources = {'C': 2, 'F': 2, 'M': 3, 'K': 0}
+        homeWorld.resources = {'C': 2, 'F': 3, 'M': 2, 'K': 0}
         homeWorld.name = 'Home'
         homeWorld.usage = 1
         homeWorld.cargo.append('C')

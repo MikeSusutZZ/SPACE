@@ -21,6 +21,14 @@ class Ship(CargoDisplay):
                 return True
         print("No fuel")
         return False
+    
+    def jumped(self):
+        for resource in self.cargo:
+            if resource == 'K':
+                self.deactivate()
+                self.cargo.remove(resource)
+                return True
+        print("No krystal")
 
     def info(self):
         used = '*'

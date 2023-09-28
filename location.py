@@ -13,12 +13,17 @@ class Location:
     def shipArrives(self, ship):
         self.ships.append(ship)
     
-    def shipLeaves(self, index):
+    def shipLeaves(self, index, type):
         try:   
             ship = self.ships[index]
-            if ship.moved():
-                return self.ships.pop(index)
-            else: print("Didn't move")
+            if type == 1:
+                if ship.moved():
+                    return self.ships.pop(index)
+                else: print("Didn't move")
+            else:
+                if ship.jumped():
+                    return self.ships.pop(index)
+                else: print("Didn't move")
         except: 
             print("There was no ship at that index")
                 
@@ -90,7 +95,7 @@ class Location:
 
     def shipMovementMenu(self, galaxy, col, row, shipIndex, moveType):
                 try:
-                    tarShip = self.shipLeaves(shipIndex)
+                    tarShip = self.shipLeaves(shipIndex, moveType)
                     while True:
                         dir = input("Would you like to go? (u)p, (d)own (l)eft, (r)ight, view (g)alaxy, or 'x' to cancel: ").lower()
                         if dir == 'u':
@@ -118,6 +123,7 @@ class Location:
     # THIS NEEDS UPDATED LATER
     def menu(self, galaxy, col, row):
         sorted(self.ships, key=lambda x: x.shipType)
+        self.info()
         self.shipMenu(galaxy, col, row)
 
             

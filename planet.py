@@ -23,10 +23,10 @@ class Planet(Location, CargoDisplay):
 
         def doShipMenu(arg):
             self.shipMenu(arg[0], arg[1], arg[2])
-        def shipMove(arg):
-            super(Planet, self).shipMovementMenu(arg[0], arg[1], arg[2])
-        def shipLoading(arg):
-            self.loadingMenu(arg[1], arg[2])
+        # def shipMove(arg):
+        #     super(Planet, self).shipMovementMenu(arg[0], arg[1], arg[2])
+        # def shipLoading(arg):
+        #     self.loadingMenu(arg[1], arg[2])
         def buildShip(arg):
             self.shipYard.menu(self)
         def buildStructure(arg):
@@ -38,23 +38,26 @@ class Planet(Location, CargoDisplay):
         while True:
             keys = []
             for ship in self.ships:
-                if not ship.used: keys.append('hasShips')
-                break
+                if not ship.used:
+                    keys.append('hasShips')
+                    break
+                
             if self.shipYard.usage > 0 and 'M' in self.cargo: keys.append('canBuildShip')
-            if not self.upgraded: keys.append('canBuild')
+            if not self.upgraded and 'M' in self.cargo: keys.append('canBuild')
             if self.usage > 0: keys.append("canHarvest")
 
             self.info(col, row)
             planetMenu = Menu("What would you like to do on this planet?", inputType='let')
             
             planetMenu.addOptionalItems([
+                "Harvest resources",
                 "Use ships",
                 "Build a ship",
                 "Build or upgrade a structure",
-                "Harvest resources"
+                
             ],
-            [doShipMenu, buildShip, buildStructure, doHarvest],
-            ['hasShips',"canBuildShip",'canBuild','canHarvest']
+            [doHarvest, doShipMenu, buildShip, buildStructure],
+            ['canHarvest','hasShips',"canBuildShip",'canBuild']
             )
             planetMenu.addItem("See planetary info", doInfo)
             if not planetMenu.menu([keys], galaxy, col, row): break
@@ -66,7 +69,9 @@ class Planet(Location, CargoDisplay):
             if costs.payCost(self.cargo, costs.city()):
                 self.civLevel += 1
                 self.upgraded = True
-            else: print("You don't have the required resources")
+            else: 
+                print("You don't have the required resources")
+                input()
         def upgradeCity(arg):
             if costs.payCost(self.cargo,costs.cityUpgrade(self.civLevel)):
                 self.civLevel += 1
@@ -98,7 +103,7 @@ class Planet(Location, CargoDisplay):
         self.upgraded = False
 
     def info(self, col, row):
-        print(f"{chr(col + 65)} {row}) ")
+        print(f"{chr(col + 65)} {row + 1}) ")
         print(f"Planet {self.name}")
         for key, value in self.resources.items():
             print(f"{key} {value}, ", end='')
@@ -111,11 +116,11 @@ class Planet(Location, CargoDisplay):
     def printStructures(self):
         print(f"Structures on this planet:")
         if self.civLevel:
-            print(f"City level: {self.civLevel}")
-            print(f"Activations left this turn: {self.usage}")
+            print(f"City level: {self.civLevel}, Activations left this turn: {self.usage}")
+            
         if self.shipYard.level:
-            print(f"Ship yard level: {self.shipYard.level}")
-            print(f"Activations left this turn: {self.shipYard.usage}")
+            print(f"Ship yard level: {self.shipYard.level}, Activations left this turn: {self.shipYard.usage}")
+            
         if self.upgraded: 
             print("This planet has had a structure built or upgraded this turn")
 
@@ -129,7 +134,7 @@ class Planet(Location, CargoDisplay):
                 print(f"C) To be transfered to the ship: {self.displayCargo(goingToShip)}")
                 print(f"D) The {tarShip.shipType} ship: {self.displayCargo(tarShip.cargo)} ")
 
-                inp = input(f"\nWhat resource would you like to move \n(c to finalize, x to cancel, h for help): ").lower()
+                inp = input(f"\nWhat resource would you like to move \n(c to confirm, x to cancel, h for help): ").lower()
                 # complete the move
                 if inp == 'c':
                     # checking overpacking the ship
@@ -207,30 +212,30 @@ hit enter to continue...''')
 
     def genResources(self, type):
         roll = random.randint(1,10)
-        if type == 'C' or type == 'F':
-            if roll <= 3:
+        if type == 'C' or type == 'F' or type == 'M':
+            if roll <= 4:
                 return 1
-            elif roll >= 4 and roll < 6:
+            elif roll >= 5 and roll < 7:
                 return 2
-            elif roll == 6:
+            elif roll == 6 or roll == 7:
                 return 3
             else: return 0
  
-        elif type == 'M':
+        # elif type == 'M':
+        #     if roll <= 3:
+        #         return 1
+        #     elif roll == 4:
+        #         return 2
+        #     elif roll == 5:
+        #         return 3
+        #     else: return 0
+
+        elif type == 'K' or type == 'D':
             if roll <= 3:
                 return 1
             elif roll == 4:
                 return 2
             elif roll == 5:
-                return 3
-            else: return 0
-
-        elif type == 'K' or type == 'D':
-            if roll <= 2:
-                return 1
-            elif roll == 3:
-                return 2
-            elif roll == 4:
                 return 3
             else: return 0
 
