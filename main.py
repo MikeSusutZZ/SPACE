@@ -29,7 +29,7 @@ def menu(galaxy):
 def checkWin(galaxy):
     winStatus = True
     for loc in galaxy.locations:
-        if isinstance(loc, Planet) and (loc.civLevel > 0):
+        if isinstance(loc, Planet) and (loc.civLevel < 1):
             winStatus = False
     return winStatus
 

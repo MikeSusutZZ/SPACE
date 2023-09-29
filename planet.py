@@ -44,7 +44,7 @@ class Planet(Location, CargoDisplay):
                 
             if self.shipYard.usage > 0 and 'M' in self.cargo: keys.append('canBuildShip')
             if not self.upgraded and 'M' in self.cargo: keys.append('canBuild')
-            if self.usage > 0: keys.append("canHarvest")
+            if self.usage > 0 and 'C' in self.cargo: keys.append("canHarvest")
 
             self.info(col, row)
             planetMenu = Menu("What would you like to do on this planet?", inputType='let')
