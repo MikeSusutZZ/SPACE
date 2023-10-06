@@ -34,7 +34,7 @@ def checkWin(galaxy):
     return winStatus
 
 def main():
-    print("\n        S.P.A.C.E.\n        Supply, Prosper, And Conquor Everything! version 0.1\n")
+    print("\n        S.P.A.C.E.\n        Supply, Prosper, And Conquor Everything! version 0.8\n")
     print("     This game was created by Mike Susut (ZippidyZap, GitHub: MikeSusutZZ)\n")
     print(f"If this is your first time playing, I highly recommend reading the README file\nfirst to learn how the game works!\n")
     seed = input("Do you want to use a seed? (either n or enter seed): ")
