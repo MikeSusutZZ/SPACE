@@ -1,8 +1,6 @@
 # S.P.A.C.E.
 ## Supply, Prosper, And Conquer Everything
 
-## This is currently not working yet and is in progress
-
 *After untold years, our seed ship has finally located us a home and ended our cryostasis. This new galaxy is full of possibilities, resources, and dangers.*
 
 ***And all of it is yours to conquer***
