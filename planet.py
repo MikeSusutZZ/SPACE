@@ -72,7 +72,7 @@ class Planet(Location, CargoDisplay):
                 self.upgraded = True
             else: 
                 print("You don't have the required resources")
-                input()
+                input(" ")
         def upgradeCity(arg):
             if costs.payCost(self.cargo,costs.cityUpgrade(self.civLevel)):
                 self.civLevel += 1
