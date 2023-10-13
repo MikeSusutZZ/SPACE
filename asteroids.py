@@ -1,5 +1,6 @@
 from location import Location
 import random
+from menu import BTElement
 
 class Asteroid(Location):
     def __init__(self):
@@ -10,6 +11,12 @@ class Asteroid(Location):
         print("Asteroid field")
         self.printShips()
         print('')
+
+    def infoBTE(self, col, row):
+        title = (f"{chr(col + 65)} {row}) ")
+        title += ("Asteroid field")
+        text = self.textShips()
+        return BTElement(title, text)
 
     def reactivate(self):
         super().reactivate

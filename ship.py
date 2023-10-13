@@ -36,6 +36,14 @@ class Ship(CargoDisplay):
         print(f"{used}{self.shipType} ", end='')
         print(self.displayCargo(self.cargo))
 
+    def infoBTE(self):
+        text = ""
+        used = '*'
+        if self.used: used = ''
+        text += (f"{used}{self.shipType} ")
+        text += (self.displayCargo(self.cargo)) + "\n"
+        return text
+
     def infoStr(self):
         used = '*'
         if self.used: used = ''
@@ -52,7 +60,7 @@ class Ship(CargoDisplay):
         return self.cargo.pop(index - 1)
     
     def load(self, resource):
-        if len(self.cargo) < self.cargoLimit:
+        if len(self.cargo) < self.cargoSize:
             self.cargo.append(resource)
         else: return False
 

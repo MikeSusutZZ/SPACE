@@ -1,4 +1,5 @@
 # Designed by Mike Susut, (ZippidyZap, MikeSusutZZ)
+import math
 
 class Menu():
     """
@@ -205,8 +206,8 @@ class RepeatedItems:
 
     def getItems(self):
         retList = []
-        for obj in self.objectList:
-            retList.append(MenuItem(self.getName(obj), self.action))
+        for i, obj in enumerate(self.objectList):
+            retList.append(MenuItem(self.getName(obj, i), self.action, i))
         return retList
 
 
@@ -234,6 +235,146 @@ class OptionalRepeatedItems:
             if self.deter(obj, i):
                 retList.append(MenuItem(self.getName(obj, i), self.action, i))
         return retList
+
+class BlockedText:
+    """
+    Represents a text-based grid where elements are organized in rows and columns.
+
+    Attributes:
+        elements (list): A list of BTElement objects representing the elements in the grid.
+        text (str): A string containing the formatted text grid.
+    """
+
+    def __init__(self, elements=[]):
+        """
+        Initializes a BlockedText instance.
+
+        Args:
+            elements (list, optional): A list of BTElement objects to initialize the grid with. Defaults to an empty list.
+        """
+        self.elements = elements
+
+    def display(self, width=3, outline=False, charWidth=None, wSpacing=4, hSpacing=1):
+        """
+        Formats and displays the elements in a text grid.
+
+        Args:
+            width (int, optional): The number of elements to display in each row. Defaults to 3.
+            outline (bool, optional): Whether to outline the grid. Defaults to False.
+            charWidth (int, optional): The desired character width for the grid. Defaults to None.
+            wSpacing (int, optional): The horizontal spacing between elements. Defaults to 4.
+            hSpacing (int, optional): The vertical spacing between rows. Defaults to 1.
+
+        Returns:
+            str: The formatted text grid.
+        """
+        text = ""
+        block_width = 0
+        for element in self.elements:
+            if element.longestLine > block_width:
+                block_width = element.longestLine
+        if charWidth:
+            width = math.ceil(charWidth / block_width)
+        block_height = 0
+        for element in self.elements:
+            if len(element.lines) > block_height:
+                block_height = len(element.lines)
+        rows = math.ceil(len(self.elements) / width)
+
+        for element in self.elements:
+            # make all blocks the same height
+            for _ in range(0, block_height - len(element.lines)):
+                element.addLine("")
+
+        for row in range(rows):
+            for block_height_count in range(block_height):
+                for block_width_count in range(width):
+                    try:
+                        element = self.elements[block_width_count + row * width]
+                        line = element.lines[block_height_count]
+                        text += line
+                        padding = block_width + wSpacing - len(line)
+                        if padding > 0:
+                            text += " " * padding
+                    except Exception:
+                        pass
+                text += "\n"
+            text += "\n" * hSpacing
+        # Add vertical spacing
+
+        return text
+
+    def buildElement(self, title, string):
+        """
+        Creates a new BTElement and adds it to the elements list.
+
+        Args:
+            title (str): The title of the element.
+            string (str): The content of the element.
+        """
+        self.elements.append(BTElement(title, string))
+
+    def addElement(self, BTElement):
+        """
+        Adds an existing BTElement to the elements list.
+
+        Args:
+            BTElement (BTElement): The BTElement object to add.
+        """
+        self.elements.append(BTElement)
+
+
+class BTElement:
+    """
+    Represents an element within a BlockedText grid.
+
+    Attributes:
+        lines (list): A list of strings representing the lines of text in the element.
+        longestLine (int): The length of the longest line in the element.
+    """
+
+    def __init__(self, title, string=None):
+        """
+        Initializes a BTElement instance.
+
+        Args:
+            title (str): The title of the element.
+            string (str, optional): The initial content of the element. Defaults to None.
+        """
+        self.lines = [title]
+        self.longestLine = len(title)
+        if string:
+            self.addLine(string)
+
+    def addLine(self, string):
+        """
+        Adds a line of text to the element.
+
+        Args:
+            string (str): The line of text to add.
+        """
+        strings = string.split("\n")
+        self.lines.extend(strings)
+        length = len(max(strings, key=len))
+        if length > self.longestLine:
+            self.longestLine = length
+
+
+    
+
+    # def appendLine(self, string, index=-1, space=True):
+    #     if index == -1:
+    #         index = len(self.lines) - 1
+    #     if space:
+    #         string = f" {string}"
+    #     self.lines[index] += string
+    #     length = len(self.lines[index])
+    #     if length > self.longestLine:
+    #         self.longestLine = length
+			
+	
+		
+		
 
 
 

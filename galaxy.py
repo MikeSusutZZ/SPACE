@@ -2,9 +2,12 @@ import random
 from location import Location
 from planet import Planet
 from asteroids import Asteroid
+from menu import BlockedText
+
 class Galaxy:
     def __init__(self, size):
         self.locations = [[self.determineLoc() for x in range(size)] for y in range(size)]
+        self.size = size
         homeWorld = Planet()
         homeWorld.resources = {'C': 2, 'F': 2, 'M': 2, 'K': 0}
         homeWorld.name = 'Home'
@@ -27,6 +30,7 @@ class Galaxy:
             return 'Invalid option'
         
     def fullInfo(self):
+        galacticInfo = BlockedText()
         for i, row in enumerate(self.locations):
             # Print the row number and the corresponding letter 'A'
             
@@ -34,7 +38,9 @@ class Galaxy:
             for j, loc in enumerate(row):
                 # Print the information for each location in the row
                 # print(f"{chr(j + 65)} {i + 1}:")
-                loc.info(j,i + 1)
+                galacticInfo.addElement(loc.infoBTE(j, i + 1))
+                # loc.info(j,i + 1)
+        print(galacticInfo.display(width= self.size, hSpacing= 2))
 
         
     def info(self):

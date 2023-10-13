@@ -4,6 +4,7 @@ import costs
 from menu import Menu
 from shipYard import ShipYard
 from cargoHolding import CargoDisplay
+from menu import BTElement
 
 class Planet(Location, CargoDisplay):
     
@@ -112,6 +113,18 @@ class Planet(Location, CargoDisplay):
         self.printStructures()
         self.printShips()
         print()
+
+    def infoBTE(self, col, row):
+        title = f"{chr(col + 65)} {row}) "
+        title += (f"Planet {self.name}")
+        text = ""
+        for key, value in self.resources.items():
+            text += (f"{key} {value}, ")
+        text += "\n"
+        text += (f"Cargo: {self.displayCargo(self.cargo)}\n")
+        text += self.printStructuresBTE()
+        text += self.textShips()
+        return BTElement(title, text)
     
     def printStructures(self):
         print(f"Structures on this planet:")
@@ -123,6 +136,18 @@ class Planet(Location, CargoDisplay):
             
         if self.upgraded: 
             print("This planet has had a structure built or upgraded this turn")
+
+    def printStructuresBTE(self):
+        text = (f"Structures on this planet:\n")
+        if self.civLevel:
+            text+=(f"City level: {self.civLevel}\n Activations left this turn: {self.usage}\n")
+            
+        if self.shipYard.level:
+            text += (f"Ship yard level: {self.shipYard.level}\n Activations left this turn: {self.shipYard.usage}\n")
+            
+        if self.upgraded: 
+            text +=("This planet has had a structure built or upgraded this turn\n")
+        return text
 
 
     def moveCargo(self, shipIndex, goingToPlanet, goingToShip):

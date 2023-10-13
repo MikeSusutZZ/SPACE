@@ -1,6 +1,7 @@
 import random
 from menu import Menu
 from typing import TYPE_CHECKING
+from menu import BTElement
 
 class Location:
     def __init__(self):
@@ -36,11 +37,28 @@ class Location:
                 if i > 4:
                     print("")
 
+    def textShips(self):
+        text = ""
+        text += "Ships at this location:"
+        for i in enumerate(self.ships):
+                text += f"{i + 1})"
+                text += self.ships[i].infoBTE()
+        return text
+                
+
     def info(self, col, row):
          print(f"{chr(col + 65)} {row}) ")
          print("Nothing here but empty space and whatever you brought with you")
          self.printShips()
          print('')
+
+    def infoBTE(self, col, row):
+        text = ""
+        title = f"{chr(col + 65)} {row})"
+        text += "Nothing here but empty space\n and whatever you brought with you\n"
+        text += self.textShips()
+        return BTElement(f"{title} Empty Space", text)
+        
 
     def moveShip(self, tarShip, galaxy, col, row):
         try:
