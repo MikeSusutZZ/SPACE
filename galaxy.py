@@ -40,6 +40,7 @@ class Galaxy:
                 # print(f"{chr(j + 65)} {i + 1}:")
                 galacticInfo.addElement(loc.infoBTE(j, i + 1))
                 # loc.info(j,i + 1)
+        print()
         print(galacticInfo.display(width= self.size, hSpacing= 2))
 
         

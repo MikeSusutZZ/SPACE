@@ -39,11 +39,12 @@ class Location:
 
     def textShips(self):
         text = ""
-        text += "Ships at this location:"
-        for i in enumerate(self.ships):
-                text += f"{i + 1})"
-                text += self.ships[i].infoBTE()
+        text += "Ships at this location:\n"
+        for index, value in enumerate(self.ships):
+            text += f"{index + 1})"
+            text += value.infoStr()
         return text
+
                 
 
     def info(self, col, row):

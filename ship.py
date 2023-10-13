@@ -41,13 +41,14 @@ class Ship(CargoDisplay):
         used = '*'
         if self.used: used = ''
         text += (f"{used}{self.shipType} ")
-        text += (self.displayCargo(self.cargo)) + "\n"
+        text += (self.displayCargo(self.cargo))
+        text += "\n"
         return text
 
     def infoStr(self):
         used = '*'
         if self.used: used = ''
-        return f"{self.shipType} {self.displayCargo(self.cargo)}"
+        return f"{self.shipType} {self.displayCargo(self.cargo)}\n"
         
 
 
