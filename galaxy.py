@@ -3,13 +3,16 @@ from location import Location
 from planet import Planet
 from asteroids import Asteroid
 from menu import BlockedText
+import os
+
+
 
 class Galaxy:
     def __init__(self, size):
         self.locations = [[self.determineLoc() for x in range(size)] for y in range(size)]
         self.size = size
         homeWorld = Planet()
-        homeWorld.resources = {'C': 2, 'F': 2, 'M': 2, 'K': 0}
+        homeWorld.resources = {'C': 2, 'F': 1, 'M': 2, 'K': 0}
         homeWorld.name = 'Home'
         homeWorld.usage = 1
         homeWorld.cargo.append('C')
@@ -41,7 +44,11 @@ class Galaxy:
                 galacticInfo.addElement(loc.infoBTE(j, i + 1))
                 # loc.info(j,i + 1)
         print()
-        print(galacticInfo.display(width= self.size, hSpacing= 2))
+        file = open('galacticMap.txt', 'w', encoding='utf-8')
+        file.write(galacticInfo.display(width= self.size, hSpacing= 2))
+        file.close()
+        os.system('start galacticMap.txt')
+        print("info sent to galacticMap.txt")
 
         
     def info(self):
